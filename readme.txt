@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: jeffsayre
 Donate link: http://wordpressfoundation.org/donate/
-Tags: buddypress, buddypress privacy plugin, members privacy, privacy
+Tags: buddypress, buddypress privacy plugin, bp privacy, members privacy, privacy
 Requires at least: PHP 5.2.x, WordPress 3.0.5, BuddyPress 1.2.7
 Tested up to: PHP 5.2.x, WordPress 3.0.5, BuddyPress 1.2.7
 Stable tag: 1.0-RC1
@@ -89,7 +89,7 @@ You are welcome to report issues or provide suggestions by creating a thread in 
 
 * disclaimer.txt - contains additional DISCLAIMERS, TERMS AND CONDITIONS, and NOTICES for BP Privacy
 * license.txt - contains the GNU General Public License 2.0 (GPL) license
-* future.txt - contains a proposed roadmap for future versions of the BuddyPress Privacy Component (BPAz) and features to implement for v1.0-RC2
+* future.txt - contains a proposed roadmap for future versions of the BuddyPress Privacy Component (BP Privacy) and features to implement for v1.0-RC2
 
 == Changelog ==
 
