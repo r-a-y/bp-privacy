@@ -1,12 +1,12 @@
 === Plugin Name ===
 Contributors: jeffsayre
 Donate link: 
-Tags: privacy plugin, members privacy, privacy
+Tags: buddypress, buddypress privacy plugin, members privacy, privacy
 Requires at least: PHP 5.2.x, WordPress 3.0.5, BuddyPress 1.2.7
 Tested up to: PHP 5.2.x, WordPress 3.0.5, BuddyPress 1.2.7
 Stable tag: 0.01
 
-BuddyPress Privacy (BP-Privacy, BP_Authz, or BPAz) is a privacy control component for BuddyPress' Core Components. It provides a site's users a mechanism with which to control who has access to which pieces of their BuddyPress Core-generated personal data.
+BuddyPress Privacy (BP Privacy, BP_Authz, or BPAz) is a privacy control component for BuddyPress' Core Components. It provides a site's users a mechanism with which to control who has access to which pieces of their BuddyPress Core-generated personal data.
 
 == Description ==
 
