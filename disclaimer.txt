@@ -1,0 +1,82 @@
+BUDDYPRESS PRIVACY COMPONENT
+ADDITIONAL DISCLAIMERS, TERMS AND CONDITIONS, and NOTICES
+
+Copyright (C) 2010-2011 Jeff Sayre <http://jeffsayre.com/> and SayreMedia.com <http://www.sayremedia.com/>
+
+The original plugin author offers this component (plugin) as a GPL plugin 
+and for zero cost. Furthermore, all CSS, javascript, and any original image
+files, are licensed under the GNU General Public License 2.0 (GPL) or any 
+later version.
+
+This plugin is a release candidate version to be used only in a development
+sandbox and not in a production environment. Use at your own risk. This 
+plugin is also not being developed or supported anymore by the author.
+It is released to the BuddyPress community for it to be adopted, forked, and 
+further developed.
+
+This disclaimer is compatible with the the GNU General Public License 2.0 (GPL),
+under which it is licensed. If there is a conflict between this disclaimer and
+the GPL, the language that provides the most legal protection for past, current,
+and any future authors, shall be used.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+You use the BuddyPress Privacy Component ("BP Privacy", "this plugin") at your own 
+risk, on your own volition, and "as is". You and your site members have no legal 
+recourse for any data loss, security breach, or other damages or losses that may occur 
+as a result of installing, activating, and/or using this plugin in any way for any purpose.
+
+Past, current, or future copyright holders, shall not be liable for any damages, including 
+but not limited to, direct, indirect, special, incidental or consequential damages or losses 
+that occur out of the use or inability to use this plugin. This holds true in perpetuity, 
+even in the event that the copyright is transferred to another party, or the copyright is 
+changed in anyway.
+
+There are no guarantees that this plugin will be kept up to date. The current, stable version
+of this plugin, v1.0-RC1, is a release candidate version to be used only in a development 
+sandbox and not in a production environment. Use at your own risk. This plugin is also not 
+being developed or supported anymore by the author. It is released to the BuddyPress community
+for it to be adopted and further developed.
+
+This plugin is designed, but not guaranteed, to function properly when activated 
+on a clean installation of the versions of PHP, WordPress, and BuddyPress indicated 
+in the readme.txt file. It is designed, but not guaranteed, to function properly 
+using the default BuddyPress theme(s). There are no guarantees this plugin 
+will function with any 3rd-party plugin, 3rd-party (custom) theme, or any 
+particular Web browser—although it does require a modern Web browser and you and 
+your users must have javascript enabled.
+
+The contents of any included translation files are the responsibility of the party  
+who provided the translation. The translation files are not checked for accuracy, quality, 
+or suitability, so use them at your own risk. You should check any and all translation
+files that you use for suitability, including inappropriate (rude, vulgar, misleading) 
+language.
+
+The included BuddyPress Privacy Manual is a draft version. As such, it may contain typos, 
+inaccuracies, and incomplete information. The manual should be used as a general guideline.
+Proceed at your own risk. Make sure you fully understand what you are doing before taking 
+any actions that might impact the functioning of your WordPress-based network. You are 
+entirely on your own. I am not responsible for any issues you have with the approaches, 
+steps, and techniques suggested in the manual--including ones that may have been caused 
+by errors in this manual. Do not proceed unless you know exactly what you are doing. 
+Whatever happens, you are on your own. You have been warned.
+
+Altering or removal of this or any other usage TERMS AND CONDITIONS associated with 
+BP Privacy will not change the official terms or conditions. The only party that 
+has the rights and jurisdiction to change the TERMS AND CONDITIONS under which 
+this plugin is licensed are the copyright owners.
+
+
+NOTICE OF PRIVACY AS A CORE BUDDYPRESS FEATURE
+
+There are no guarantees that any portion of BP Privacy will be merged into BuddyPress 
+core. This plugin was designed as a 3rd-party plugin. It was not designed with the 
+intention of being or becoming a core BuddyPress component. Therefore any migration 
+or conversion of your users' privacy data from BP Privacy to any future version of a 
+BuddyPress-offered core privacy service may be required and is your sole responsibility.

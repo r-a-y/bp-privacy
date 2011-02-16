@@ -1,0 +1,104 @@
+/**** PRIVACY SETTINGS SCREENS ***************************/
+
+/* Default settings for section visibility */
+.privacy_slide_main {
+	margin-bottom: 30px;
+}
+
+.privacy_slide_group { 
+	width: 95%;
+	margin-bottom: 30px;
+	float: right;
+	display: none;
+}
+
+.privacy_slide_single { 
+	width: 90%;
+	margin-top: 30px;
+	float: right;
+	display: none;
+}
+
+.privacy_slide_main a, .privacy_slide_group a {
+	text-decoration:none;
+}
+
+/* Privacy settings form CSS for tables */
+
+table.privacy-settings tr {
+	/*border-bottom: 1px solid #eee;*/
+	line-height: 23px;
+}
+
+table.privacy-settings thead tr {
+	font-weight: bold;
+	background-color: #EAEAEA; /*#FFF9DB;*/
+}
+
+table.privacy-settings td {
+	padding: 5px 10px;
+}
+
+table.privacy-settings th.title, td.title {
+	width: 35%;
+	text-align: left;
+}
+
+table.privacy-settings th.selection, td.selectbox {
+	width: 25%;
+	text-align: center;
+}
+
+table.privacy-settings th.userlist, td.userlist {
+	width: 40%;
+	text-align: center;
+}
+	
+/* Global and Group privacy table header CSS */
+table.privacy-settings th.group-title, td.group-selection {
+	width: 40%;
+	text-align: left;
+}
+
+table.privacy-settings th.group-second, td.group-userlist {
+	width: 30%;
+	text-align: left;
+}
+
+table.privacy-settings th.group-third, td.group-third {
+	width: 10%;
+	text-align: left;
+}
+
+table.privacy-settings th.button-expand, td.group-save {
+	padding: 0px 15px 0px 0px;
+	width: 20%;
+	text-align: right;
+}
+
+table.privacy-settings th.button-expand p {
+	font-size: 14px;
+	margin: 12px 0 12px 0;
+	color: #888;
+}
+
+table.privacy-settings th.button-expand a {
+	/*color: #fff;*/
+	text-decoration: none;
+}
+
+/* CSS for privacy dropdown selector */
+#acl_warning {
+	font-weight: bold; 
+	text-align: center;
+	background-color: #fffeeb;
+	color: #FF8000;
+	margin: 3px;
+	padding: 2px;
+}
+
+/* CSS for listbox-loading ajax spinner */
+img.ajax_spinner {
+	display:none;
+	padding: 0 20px 0 20px;
+}

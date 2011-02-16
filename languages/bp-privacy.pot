@@ -1,0 +1,496 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BP Privacy v1.0-RC1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-16 03:23-0500\n"
+"PO-Revision-Date: 2011-02-16 03:26-0500\n"
+"Last-Translator: BuddyPress Community\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: bp-authz-admin.php:16
+msgid "Site-wide Privacy Control"
+msgstr ""
+
+#: bp-authz-admin.php:17
+msgid "Individual Component Privacy Filtering Control"
+msgstr ""
+
+#: bp-authz-admin.php:18
+msgid "Customize ACL Settings"
+msgstr ""
+
+#: bp-authz-admin.php:19
+msgid "Privacy Acceptance Checkbox"
+msgstr ""
+
+#: bp-authz-admin.php:20
+msgid "Site Lockdown Control"
+msgstr ""
+
+#: bp-authz-admin.php:25
+msgid "Enable or Disable Site-wide Privacy:"
+msgstr ""
+
+#: bp-authz-admin.php:31
+msgid "Profile Privacy Filtering:"
+msgstr ""
+
+#: bp-authz-admin.php:33
+msgid "Activity Stream Privacy Filtering:"
+msgstr ""
+
+#: bp-authz-admin.php:35
+msgid "Friends Privacy Filtering:"
+msgstr ""
+
+#: bp-authz-admin.php:37
+msgid "Messaging Privacy Filtering:"
+msgstr ""
+
+#: bp-authz-admin.php:39
+msgid "Blogs Privacy Filtering:"
+msgstr ""
+
+#: bp-authz-admin.php:41
+msgid "Groups Privacy Filtering:"
+msgstr ""
+
+#: bp-authz-admin.php:47
+msgid "All Users:"
+msgstr ""
+
+#: bp-authz-admin.php:49
+msgid "Logged in Users:"
+msgstr ""
+
+#: bp-authz-admin.php:51
+msgid "Friends:"
+msgstr ""
+
+#: bp-authz-admin.php:53
+msgid "Members of These Groups:"
+msgstr ""
+
+#: bp-authz-admin.php:55
+msgid "These Users Only:"
+msgstr ""
+
+#: bp-authz-admin.php:57
+msgid "Only Me:"
+msgstr ""
+
+#: bp-authz-admin.php:59
+msgid "Current ACL Settings:"
+msgstr ""
+
+#: bp-authz-admin.php:65
+msgid "Require Privacy Acceptance:"
+msgstr ""
+
+#: bp-authz-admin.php:71
+msgid "Access to Site:"
+msgstr ""
+
+#: bp-authz-admin.php:173
+msgid "Plugin Information"
+msgstr ""
+
+#: bp-authz-admin.php:177
+msgid "Version"
+msgstr ""
+
+#: bp-authz-admin.php:177
+msgid "Requires"
+msgstr ""
+
+#: bp-authz-admin.php:177
+msgid "Suitability"
+msgstr ""
+
+#: bp-authz-admin.php:177
+msgid "Licensed Under"
+msgstr ""
+
+#: bp-authz-admin.php:181
+msgid "Support the WordPress Foundation"
+msgstr ""
+
+#: bp-authz-admin.php:187
+msgid "If you are a corporate user, consultant, plugin developer, or theme designer and profit from using this plugin, WordPress, and BuddyPress, then please consider donating to the WordPress Foundation. Thank you!"
+msgstr ""
+
+#: bp-authz-admin.php:191
+msgid "BuddyPress Privacy Resources"
+msgstr ""
+
+#: bp-authz-admin.php:207
+msgid "BuddyPress Privacy Settings"
+msgstr ""
+
+#: bp-authz-admin.php:209
+msgid "The BuddyPress Privacy Component and all its filters are enabled by default. Below are settings to give you fine-grained control over the Privacy Component."
+msgstr ""
+
+#: bp-authz-admin.php:221
+msgid "Save Settings"
+msgstr ""
+
+#: bp-authz-admin.php:272
+msgid "If you need to temporarily disable site-wide privacy, you can do so below. Disabling site-wide privacy will remove the privacy settings navigation menu from each user&#39;s settings menu. It also disables all the privacy filtering functions. However, it does not deactivate the privacy plugin."
+msgstr ""
+
+#: bp-authz-admin.php:287
+#: bp-authz-admin.php:322
+#: bp-authz-admin.php:341
+#: bp-authz-admin.php:360
+#: bp-authz-admin.php:378
+#: bp-authz-admin.php:396
+#: bp-authz-admin.php:415
+msgid "Enabled"
+msgstr ""
+
+#: bp-authz-admin.php:288
+#: bp-authz-admin.php:323
+#: bp-authz-admin.php:342
+#: bp-authz-admin.php:361
+#: bp-authz-admin.php:379
+#: bp-authz-admin.php:397
+#: bp-authz-admin.php:416
+msgid "Disabled"
+msgstr ""
+
+#: bp-authz-admin.php:305
+msgid "In addition to enabling or disabling site-wide privacy, you have control over individual BuddyPress component privacy filtering. You can choose which privacy features you want to offer to your users. NOTE: As the Site Administrator, you will always be able to see each user&#39;s complete content with the exception of private groups where you are not a member."
+msgstr ""
+
+#: bp-authz-admin.php:433
+msgid "The BuddyPress Privacy Component offers a rigorous, multilevel access control list (ACL) settings array that provides each member with the ability to decide how much or how little access they grant to each piece of datum they generate. As a Site Administrator, you may wish to limit the number of options your users have in setting access rights."
+msgstr ""
+
+#: bp-authz-admin.php:435
+msgid "By default, all ACL-settings levels are selected. <strong>Please Be Advised:</strong> if you start off by offering all the ACL-settings levels and then later limit the number of levels, users who have selected a level for a piece of datum that no longer applies will have to reset access rights for that object. See the BuddyPress Privacy Manual for more details."
+msgstr ""
+
+#: bp-authz-admin.php:569
+msgid "Save settings to see your changes reflected below.<br />"
+msgstr ""
+
+#: bp-authz-admin.php:607
+msgid "If you have enabled privacy, it is a good idea to let newly-registering members know about your privacy policy and require that they accept it as part of the signup process. You can automatically place a checkbox on the registration form by checking the box below. Members must click the box, indicating their acceptance of your site&#039;s privacy policy. They will not be able to complete the signup process without checking the box. See the BuddyPress Privacy Manual for more details on setting your own custom Privacy Policy page."
+msgstr ""
+
+#: bp-authz-admin.php:643
+msgid "As a Site Administrator, you may prefer not to let non-logged-in members access your network. Instead, you might want to send them to a custom homepage or directly to the registration page. At other times, you may need to do some heavy behind-the-scenes site maintenance and do not want anyone expect Site Admins to have access to the network. The default option is to present an open network to all. Choose which option you prefer below. See the BuddyPress Privacy Manual and installation directions for more details."
+msgstr ""
+
+#: bp-authz-admin.php:659
+msgid "Open to All"
+msgstr ""
+
+#: bp-authz-admin.php:660
+msgid "Must be Logged in"
+msgstr ""
+
+#: bp-authz-admin.php:662
+msgid "Maintenance Mode"
+msgstr ""
+
+#: bp-authz-api.php:325
+msgid "Our network does not have any groups yet. Be the first to create one!"
+msgstr ""
+
+#: bp-authz-api.php:1126
+#, php-format
+msgid " To register on this site, you must check this box to indicate your acceptance of our <a href=\"%1s\" title=\"Accept Privacy Policy\">privacy policy</a>."
+msgstr ""
+
+#: bp-authz-api.php:1133
+msgid "Accept Privacy Settings"
+msgstr ""
+
+#: bp-authz-api.php:1164
+msgid "To complete registration, you must accept our privacy policy."
+msgstr ""
+
+#: bp-authz-core.php:188
+msgid "All Users"
+msgstr ""
+
+#: bp-authz-core.php:189
+msgid "Logged in Users"
+msgstr ""
+
+#: bp-authz-core.php:190
+msgid "Friends"
+msgstr ""
+
+#: bp-authz-core.php:191
+msgid "Members of These Groups"
+msgstr ""
+
+#: bp-authz-core.php:192
+msgid "These Users Only"
+msgstr ""
+
+#: bp-authz-core.php:193
+msgid "Only Me"
+msgstr ""
+
+#: bp-authz-core.php:341
+msgid "IMPORTANT: <a href=\"http://#/\">Please see the readme.txt file or ...before updating the Privacy Component.</a>"
+msgstr ""
+
+#: bp-authz-core.php:410
+msgid "Privacy Settings"
+msgstr ""
+
+#: bp-authz-core.php:435
+msgid "Updated Privacy Settings"
+msgstr ""
+
+#: bp-authz-listbox-ajax.php:38
+msgid "none"
+msgstr ""
+
+#: bp-authz-listbox-ajax.php:43
+msgid "Error outputting listbox."
+msgstr ""
+
+#: bp-authz-settings.php:226
+msgid "Privacy"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:21
+msgid "Activity Privacy"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:75
+#: settings/bp-authz-friends-settings.php:62
+#: settings/bp-authz-messages-settings.php:60
+#: settings/bp-authz-profile-settings.php:75
+msgid "Changes Saved."
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:79
+#: settings/bp-authz-friends-settings.php:66
+#: settings/bp-authz-messages-settings.php:64
+#: settings/bp-authz-profile-settings.php:79
+msgid "Error Saving Your Settings."
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:84
+msgid "Set the viewing rights to your activity stream"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:85
+msgid "The screen below gives you privacy control over your activity stream. You can apply a single privacy-level setting to your activity stream or expand the selection, offering you even more fine-grained control. You can choose to accept the default settings or set a custom value. You can select multiple users or groups in each listbox (PC: Ctrl click; Mac: Cmd click)."
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:119
+#: settings/bp-authz-profile-settings.php:119
+msgid "More options..."
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:120
+#: settings/bp-authz-profile-settings.php:120
+msgid "Fewer options..."
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:177
+msgid "Global Activity Privacy"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:217
+#: settings/bp-authz-activity-settings.php:455
+#: settings/bp-authz-activity-settings.php:541
+#: settings/bp-authz-friends-settings.php:109
+#: settings/bp-authz-profile-settings.php:217
+#: settings/bp-authz-profile-settings.php:449
+#: settings/bp-authz-profile-settings.php:535
+msgid "Who Can View"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:222
+#: settings/bp-authz-activity-settings.php:460
+#: settings/bp-authz-activity-settings.php:656
+#: settings/bp-authz-friends-settings.php:172
+#: settings/bp-authz-friends-settings.php:342
+#: settings/bp-authz-messages-settings.php:199
+#: settings/bp-authz-profile-settings.php:222
+#: settings/bp-authz-profile-settings.php:454
+#: settings/bp-authz-profile-settings.php:634
+msgid "Please select a new option."
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:310
+#: settings/bp-authz-profile-settings.php:310
+msgid "Apply Globally on Save?"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:415
+msgid "Activity"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:516
+#: settings/bp-authz-profile-settings.php:510
+msgid "Apply to Group on Save?"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:540
+msgid "Individual Activities"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:542
+#: settings/bp-authz-profile-settings.php:536
+msgid "User/Group List"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:772
+#: settings/bp-authz-friends-settings.php:431
+#: settings/bp-authz-messages-settings.php:288
+#: settings/bp-authz-profile-settings.php:752
+msgid "Save Changes"
+msgstr ""
+
+#: settings/bp-authz-activity-settings.php:774
+#: settings/bp-authz-friends-settings.php:433
+#: settings/bp-authz-profile-settings.php:754
+msgid "Note: Site Administrators can always see your data"
+msgstr ""
+
+#: settings/bp-authz-blogs-settings.php:14
+msgid "Blogs Privacy"
+msgstr ""
+
+#: settings/bp-authz-blogs-settings.php:31
+msgid "Set the rights to who can see your blogs"
+msgstr ""
+
+#: settings/bp-authz-blogs-settings.php:32
+#: settings/bp-authz-groups-settings.php:32
+msgid "This feature will be available in Version 1.0-RC2."
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:20
+msgid "Friends Privacy"
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:71
+msgid "Set the rights to who can see your friends list or request friendship"
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:72
+#: settings/bp-authz-messages-settings.php:70
+msgid "You can choose to accept the default settings or set a custom value. You can select multiple users or groups in each listbox (PC: Ctrl click; Mac: Cmd click)."
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:108
+msgid "Friends Actions"
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:116
+msgid "Who can view your friends List"
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:257
+msgid "Who can request friendship"
+msgstr ""
+
+#: settings/bp-authz-friends-settings.php:287
+#: settings/bp-authz-messages-settings.php:189
+msgid "No One"
+msgstr ""
+
+#: settings/bp-authz-groups-settings.php:14
+msgid "Groups Privacy"
+msgstr ""
+
+#: settings/bp-authz-groups-settings.php:31
+msgid "Set the rights to who can see your groups"
+msgstr ""
+
+#: settings/bp-authz-messages-settings.php:19
+msgid "Messaging Privacy"
+msgstr ""
+
+#: settings/bp-authz-messages-settings.php:69
+msgid "Set the rights to who can send you a private message"
+msgstr ""
+
+#: settings/bp-authz-messages-settings.php:101
+msgid "Messaging Settings"
+msgstr ""
+
+#: settings/bp-authz-messages-settings.php:102
+msgid "Who Can Contact you"
+msgstr ""
+
+#: settings/bp-authz-messages-settings.php:109
+msgid "Who can send you a private message"
+msgstr ""
+
+#: settings/bp-authz-messages-settings.php:290
+msgid "Note: Site Administrators can always send you messages"
+msgstr ""
+
+#: settings/bp-authz-profile-settings.php:21
+msgid "Profile Privacy"
+msgstr ""
+
+#: settings/bp-authz-profile-settings.php:84
+msgid "Set the viewing rights to your profile fields"
+msgstr ""
+
+#: settings/bp-authz-profile-settings.php:85
+msgid "The screen below gives you privacy control over your profile information. You can apply a single privacy-level setting to your entire profile or expand the selection, offering you even more fine-grained control. You can choose to accept the default settings or set a custom value. You can select multiple users or groups in each listbox (PC: Ctrl click; Mac: Cmd click)."
+msgstr ""
+
+#: settings/bp-authz-profile-settings.php:177
+msgid "Global Profile Privacy"
+msgstr ""
+
+#: settings/bp-authz-profile-settings.php:409
+msgid "Group Privacy"
+msgstr ""
+
+#: settings/bp-authz-profile-settings.php:534
+msgid "Individual Fields"
+msgstr ""
+
+#: themes/privacy/maintenance.php:24
+msgid "Home"
+msgstr ""
+
+#: themes/privacy/maintenance.php:33
+msgid "Please Pardon Our Improvements!"
+msgstr ""
+
+#: themes/privacy/maintenance.php:39
+msgid "Our site is currently undergoing maintenance and will be back up shortly. Please return in a few hours."
+msgstr ""
+
+#: themes/privacy/privacy-policy.php:12
+msgid "Privacy Policy"
+msgstr ""
+
+#: themes/privacy/privacy-policy.php:18
+msgid "This site uses a robust privacy filtering plugin that provides site members with fine, granular control over who has access to which pieces of their personal data. Site Administrators will always be able to see your content no matter your selected privacy settings. Group Administrators will always be able to see your group content no matter your selected privacy settings. Privacy settings and control may be changed by site owner from time to time without any notice."
+msgstr ""
+
+#: themes/privacy/welcome.php:11
+msgid "Custom Home Theme Example"
+msgstr ""
+
+#: themes/privacy/welcome.php:17
+msgid "This is an example of a custom BuddyPress welcome homepage that non-logged in users will see if you have set the Site Lockdown Control in BP Privacy Admin to Must be Logged in. Style away and redesign as you see fit."
+msgstr ""
+
