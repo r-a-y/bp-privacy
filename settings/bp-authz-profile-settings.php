@@ -142,7 +142,7 @@ function bp_authz_screen_profile_privacy_content() {
 		// Eventually replace below query with a single call to bp_authz_retrieve_user_acl_recordset()
 
 		// Retrieve the ACL "global" record, if any; All ACL global records have a $field_id = 0
-		$acl_row_global = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->id, $component, $filtered_item, 0);
+		$acl_row_global = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->ID, $component, $filtered_item, 0);
 
 		//***
 		/*
@@ -363,7 +363,7 @@ function bp_authz_screen_profile_privacy_content() {
 					// Eventually replace below query with a single call for this component to bp_authz_retrieve_user_acl_recordset()
 
 					// Retrieve any Group ACL record
-					$acl_row_group = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->id, $component, $filtered_item, $profile_group_id);
+					$acl_row_group = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->ID, $component, $filtered_item, $profile_group_id);
 
 					//***
 					/*
@@ -574,7 +574,7 @@ function bp_authz_screen_profile_privacy_content() {
 						// Eventually replace below query with a single call to bp_authz_retrieve_user_acl_recordset()
 
 						// Retrieve any Single ACL record for the field
-						$acl_row_single = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->id, $component, $filtered_item, $field_id);
+						$acl_row_single = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->ID, $component, $filtered_item, $field_id);
 
 						//***
 						/*

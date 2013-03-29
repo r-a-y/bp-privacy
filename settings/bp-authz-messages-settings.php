@@ -121,7 +121,7 @@ function bp_authz_screen_messaging_privacy_content() {
 						$single_rec++;
 
 						// Retrieve the ACL record, if any; for tis query the $field_id = 0
-						$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->id, $component, $filtered_item, 0);
+						$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $current_user->ID, $component, $filtered_item, 0);
 
 						//***
 						/*

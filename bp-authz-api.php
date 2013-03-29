@@ -326,7 +326,7 @@ function bp_authz_create_privacy_settings_listbox( $bp_current_user_group_list, 
 			return false;
 		} else {
 			//*** Below should be deleted once global $bp_users_groups variable is in use via bp_authz_get_users_groups() function being controlled by cron job
-			$bp_users_groups = bp_authz_get_users_groups( $current_user->id );
+			$bp_users_groups = bp_authz_get_users_groups( $current_user->ID );
 		}
 
 	} elseif ( $list_type == 'userlist' ) {
@@ -392,7 +392,7 @@ function bp_authz_create_privacy_settings_listbox( $bp_current_user_group_list, 
 		 * which they will be picking users.
 		 */
 
-		if ( $user_group_list_id == $current_user->id ) {
+		if ( $user_group_list_id == $current_user->ID ) {
 			// Skip to next array element
 			continue;
 		}
@@ -575,7 +575,7 @@ function bp_authz_process_privacy_settings_array_element( $privacy_post_array_el
 	/* Save data to the ACL table(s); the saving of any list data will be
 	 * triggered within the save() method of the BP_Authz_ACL_Main class.
 	 */
-	$acl_main_record = bp_authz_save_user_acl_array_main( $id, $current_user->id, $filtered_component, $filtered_item, $item_id, $old_lists_array, $bpaz_level, $group_user_list_id_array );
+	$acl_main_record = bp_authz_save_user_acl_array_main( $id, $current_user->ID, $filtered_component, $filtered_item, $item_id, $old_lists_array, $bpaz_level, $group_user_list_id_array );
 
 	if ( $acl_main_record != true ) {
 		return false;
