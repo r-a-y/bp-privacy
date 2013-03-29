@@ -1,0 +1,75 @@
+Roadmap for Future Versions of BPAz ( Updated: February 15, 2011 )
+-------------------------------------------------------------------
+
+ROADMAP NOTES:
+
+The current version of this plugin was to be released as v1.0 but since I am no longer supporting and developing this plugin, I have reverted the version numbering to pre-release status. It should be treated as a pre-release version and therefore not used in a production environment.
+
+The roadmap features listed below for v1.0-RC2 were originally planned for multiple version releases--some under v1.0.x and some for v1.1. These features have been gathered under v1.0-RC2 to suggest that they should be developed, fully tested, and rolled out before someone else releases a production-ready fork of this plugin. It will take that long for a developer or team of developers to sufficiently understand the inner workings of this plugin before they can claim that their forked-version is production ready.
+
+To help facilitate further development, I have kept many of the debugging and process output checks in various functions throughout BP Privacy. This was done so as it would be easier to grasp what the various functions do. I've commented these out so that they do not disrupt the UX. Look for code that is preceded by a "//***". The helpful debugging and process output checks will begin below those lines, sometimes being only one line of echoed output and at other times being multiple lines of output.
+
+As an example, the bp_authz_process_privacy_settings() function in the Privacy API is a major function. It is the primary function responsible for processing privacy settings screen form data gathered by the $_POST function. It is a complex function whose workings can be better understood by uncommenting the various process output checks (echo statements) and then experimenting with saving and deleting privacy settings form data and studying the output that is presented at the top of each screen after hitting the "Save Changes" button. These code lines should of course be recommented or even removed when you think you fully understand the inner workings.
+
+ROADMAP FUTURE VERSIONS:
+
+Version 1.0-RC2
+
+- Estimated Release Date: None planned
+- Second release candidate
+- Fix any verified v1.0-RC1 bugs
+- Update codebase to work with and to require WordPress 3.1.x and BuddyPress 1.3.x
+- Check code execution efficiency and optimization:
+	- Run WP_DEBUG (place "define('WP_DEBUG', true);" in wp-config.php ); there are a few, minor BP Privacy errors still
+	- Check efficiency of all DB queries using the "define( 'SAVEQUERIES', true );" setting in wp-config.php file
+	- Check memory usage using PHP's memory_get_usage() function
+	- Setup cron actions for following functions: bp_authz_get_users_groups, bp_authz_get_bp_site_groups, bp_authz_get_bp_site_users. See all comments marked "//*** " in bp_authz_create_privacy_settings_listbox() function in the Privacy API
+	- Reduce settings form queries by pulling in entire recordset for a given user for a given component instead of pulling one privacy item at a time: use bp_authz_retrieve_user_acl_recordset() instead of bp_authz_retrieve_user_acl_record_id_not_known() then parse records as needed.
+	
+- Submit Trac ticket to add a new filter in bp_members_pagination_count() function that allows for the outputted text to filtered out; without this, when a viewer visits a user's friends's page, and that page has been set to disallow seeing the user's friends list, the output from that function still shows to total friend count: 'Viewing member %1$s to %2$s (of %3$s active members)' The fix will have to be added to bp_authz_filter_friends_list_by_acl()
+- Add user-configurable privacy filtering for blogs
+- Add user-configurable privacy filtering for groups (possibly include group forums as well although this may require waiting for the new bbPress as plugin plugin)
+- Add ability of Group Admins to disable privacy filtering within their group. There should be a Site Admin admin option to turn this feature on or off.
+- Make blogs and groups filtering enabled as default in bp_authz_initialize_settings() in bp-authz-core.php
+- Verify security checks (proper filters, kses, nonces, etc.)
+- Object caching support -> is this necessary?
+- Record privacy activity action; currently not fully implemented
+- Enable privacy templates to work under BP Privacy's /themes/privacy directory instead of requiring them to be moved into specific places in current default theme
+- Automatically disable "Individual Component Privacy Filtering Control" for admin settings in "BuddyPress > Privacy Settings" for disabled core BP components
+- Admin option group (radio buttons) to set whether disabled privacy groupings (ACL levels) should be shown to users as grayed out (which is the current metaphor) or not shown at all
+- Remove the inline CSS from bp_authz_admin_settings_options() in bp-authz-admin.php and place in privacy_settings.css
+- Make sure that all CSS selectors are unique to plugin
+- Standardize all BP Privacy function prefixes: either use bp_authz_xxx or bp_privacy_xxx, but not a mixture of both
+- Finishing phpDoc documenting all functions
+- Expand the bp_authz_filter_activity_by_acl() activity filter to offer privacy filtering by activity subnavigation menuing; see commented section within that function entitled "Future Version" and also the function test_filter_activity_subnav() at end of bp-authz-privacy-filters.php file.
+- Consider implementing functions at the end of the Privacy API listed under "These functions are not currently used" section.
+- Consider implementing functions at the end of bp-authz-privacy-filters.php file listed under "Test Privacy Filtering Functions" section.
+- Consider turning the Privacy API into a class file encapsulating all functions into methods instead of their current super-function file status
+- Consider creating a file for listing all translatable strings used in multiple places. There's no need to have translators retranslate.
+- Consider including a PHP version check on install to determine site’s PHP version; if version of PHP is older than 5.2, then disable the "Members of These Groups" and "These Users Only" filtering options.
+- Consider validating listbox entry to make sure that at least one row is selected when BPAz is set to 3 or 4.
+- Consider implementing bp_authz_update_message() in bp-authz-core.php; currently the add_action line is commented out.
+- Implement the bp_authz_filter_compose_messages_by_acl() function in bp-authz-privacy-filters.php file; may need to look at bp_authz_test_filter_compose_messages_by_acl(); if implemented, then display a message when a recipient(s) on the compose message screen list is filtered out so that user knows message was not sent.
+- Implement the following three functions under the "Special Functions" section in bp-authz-core.php: bp_authz_remove_data_on_user_deletion(), bp_authz_remove_data_on_group_deletion(), bp_authz_remove_data_on_user_leaving_hidden_group()
+
+- Site Admin Privacy Settings Menu: 
+	- When bp_privacy_register_component() is utilized in Privacy API, automatically add 3rd-party components that register with the Privacy Component to have their privacy filtering functions enabled or disabled
+	- For "Site Lockdown Control" section:
+		- Add a radio button group to the “Must be Logged in” option that allows the Admin to select to send logged out users to either the registration page or another template of their choice.
+	- For "Customize ACL Settings" section:
+		- Need to perform check to make sure at least one ACL level is checked. If not, throw warning message.
+		- Consider recoding ACL selection dropdown to not show Site-Admin-deselected items. This would also require changing the error coding in bp_authz_output_select() function to check for not in array.
+	- Add new options section “Allow Group Administrators” that lets Site Admins decide whether or not Group Admins can enable or disable privacy filtering for their groups.
+	
+- In WordPress 3.1, the function register_activation_hook() will be deprecated. This will have to be removed from bp-athz-loader.php, bp_authz_plugin_activated()
+- In BuddyPress 1.3, the function bp_core_add_root_component() will be deprecated. This will effect BP Privacy. See this changeset for more details: http://trac.buddypress.org/changeset/3323/ 
+- Remove any left-over commented-out debugging code--especially in the Privacy API file
+- Remove excess, superfluous comments by placing more of the inline-code comments into the BuddyPress Privacy Manual
+- Make code more efficient were possible and necessary
+
+
+Version 1.0
+
+- Estimated Release Date: None planned
+- First official production-ready version
+- Fix any verified 1.0-RC2 bugs
