@@ -202,7 +202,7 @@ function bp_authz_setup_acl_levels() {
 	}
 
 }
-add_action( 'bp_authz_init', 'bp_authz_setup_acl_levels', 1 );
+add_action( 'bp_setup_globals', 'bp_authz_setup_acl_levels', 20 );
 
 
 /****************************************************************
