@@ -103,7 +103,7 @@ function bp_authz_tiered_form_section_visibility_toggle( $acl_rec ) {
 function bp_authz_get_bp_site_users() {
 	global $wpdb, $bp, $bp_site_users;
 
-	$bp_site_users = $wpdb->prepare( "SELECT DISTINCT u.ID as id, u.user_login, u.display_name as name FROM {$wpdb->users} AS u ORDER BY u.display_name ASC" );
+	$bp_site_users = "SELECT DISTINCT u.ID as id, u.user_login, u.display_name as name FROM {$wpdb->users} AS u ORDER BY u.display_name ASC";
 
 	if ( $bp_site_users = $wpdb->get_results($bp_site_users, ARRAY_A) ) {
 		return $bp_site_users;
@@ -143,7 +143,7 @@ function bp_authz_get_bp_site_groups() {
 		return false;
 	}
 
-	$bp_site_groups = $wpdb->prepare( "SELECT DISTINCT g.id, g.name, g.status FROM {$bp->groups->table_name} AS g ORDER BY g.name ASC" );
+	$bp_site_groups = "SELECT DISTINCT g.id, g.name, g.status FROM {$bp->groups->table_name} AS g ORDER BY g.name ASC";
 
 	if ( $bp_site_groups = $wpdb->get_results($bp_site_groups, ARRAY_A) ) {
 		return $bp_site_groups;
