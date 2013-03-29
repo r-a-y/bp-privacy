@@ -166,7 +166,7 @@ function bp_authz_screen_friends_privacy_content() {
 
 					<td class="selectbox">
 						<select name="bp-authz[singles][single-<?php echo $single_rec ?>][acl]" id="friends-acl-<?php echo $acl_rec; ?>">
-							<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_row->bpaz_level ); ?>
+							<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_bpaz ); ?>
 						</select>
 						<?php if( $acl_inactive ) {
 								echo "<div id='acl_warning'><p>" . __( 'Please select a new option.', BP_AUTHZ_PLUGIN_NAME ) . "</p></div>";
@@ -336,7 +336,7 @@ function bp_authz_screen_friends_privacy_content() {
 
 					<td class="selectbox">
 						<select name="bp-authz[singles][single-<?php echo $single_rec ?>][acl]" id="friends-acl-<?php echo $acl_rec; ?>">
-							<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_row->bpaz_level ); ?>
+							<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_bpaz ); ?>
 						</select>
 						<?php if( $acl_inactive ) {
 								echo "<div id='acl_warning'><p>" . __( 'Please select a new option.', BP_AUTHZ_PLUGIN_NAME ) . "</p></div>";
