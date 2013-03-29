@@ -83,7 +83,7 @@ function bpaz_init() {
 	do_action( 'bp_authz_init' );
 
 }
-add_action( 'bp_include', 'bpaz_init', 1 );
+add_action( 'bp_include', 'bpaz_init' );
 
 
 /**
