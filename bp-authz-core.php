@@ -140,6 +140,7 @@ function bp_authz_setup_globals() {
 	global $bp, $wpdb;
 
 	/* For internal identification */
+	$bp->authz     = new stdClass;
 	$bp->authz->id = BP_AUTHZ_SLUG;
 
 	$bp->authz->table_name_acl_main = $wpdb->base_prefix . 'bp_authz_acl_main';
@@ -148,6 +149,10 @@ function bp_authz_setup_globals() {
 	$bp->authz->format_activity_function = 'bp_authz_format_activity';
 	$bp->authz->format_notification_function = 'bp_authz_format_notifications';
 	$bp->authz->slug = BP_AUTHZ_SLUG;
+
+	if ( empty( $bp->version_numbers ) )
+		$bp->version_numbers = new stdClass;
+
 	$bp->version_numbers->authz = BP_AUTHZ_VERSION;
 
 	/* Register this in the active components array */
