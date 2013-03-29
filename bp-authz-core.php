@@ -441,7 +441,7 @@ function bp_authz_register_privacy_activity_actions() {
 
 	do_action( 'privacy_register_activity_actions' );
 }
-add_action( 'bp_init', 'bp_authz_register_privacy_activity_actions', 3 );
+add_action( 'bp_register_activity_actions', 'bp_authz_register_privacy_activity_actions' );
 
 
 /**********************************************************************************
