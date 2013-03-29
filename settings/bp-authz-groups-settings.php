@@ -6,10 +6,10 @@
 
 function bp_authz_add_groups_nav() {
 	global $bp;
- 
+
  	// Add all the enabled privacy sub navigation items
 	$privacy_link = $bp->loggedin_user->domain . $bp->authz->slug . '/';
-	
+
 	if( bp_privacy_filtering_active( 'groups' ) ) {
 		bp_core_new_subnav_item( array( 'name' => __( 'Groups Privacy', BP_AUTHZ_PLUGIN_NAME ), 'slug' => 'groups-privacy', 'parent_url' => $privacy_link, 'parent_slug' => $bp->authz->slug, 'screen_function' => 'bp_authz_screen_groups_privacy', 'position' => 60, 'user_has_access' => bp_is_my_profile() ) );
 	};
@@ -21,7 +21,7 @@ function bp_authz_screen_groups_privacy() {
 	global $current_user, $bp_privacy_updated, $privacy_form_error;
 
 	add_action( 'bp_template_content', 'bp_authz_screen_groups_privacy_content' );
-	
+
 	bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 }
 

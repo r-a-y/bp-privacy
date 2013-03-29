@@ -5,9 +5,9 @@
  *
  * This function enqueues the javascript file and creates a unique JS namespace
  * for the privacy object.
- * 
+ *
  * To learn more about how BP Privacy uses AJAX, see the following in the
- * Developer's Guide section of the BuddyPress Privacy Manual for more 
+ * Developer's Guide section of the BuddyPress Privacy Manual for more
  * details: Using AJAX to display Group and User Listboxes.
  *
  * @version 1.1
@@ -28,7 +28,7 @@ add_action( 'template_redirect', 'bp_authz_add_js', 1 );
 /**
  * bp_authz_create_js_namespace()
  *
- * Declare a JavaScript namespace object for the file that handles 
+ * Declare a JavaScript namespace object for the file that handles
  * the AJAX request (wp-admin/admin-ajax.php)
  *
  * @package BP Privacy
@@ -55,7 +55,7 @@ add_action( 'wp_head', 'bp_authz_create_js_namespace' );
  */
 function bp_authz_add_structure_css() {
 	/* Enqueue the privacy settings CSS file to give positional formatting for the privacy component reglardless of the theme. */
-	wp_enqueue_style( 'bp-authz-structure', BP_AUTHZ_PLUGIN_URL . '/css/privacy_settings.css' );	
+	wp_enqueue_style( 'bp-authz-structure', BP_AUTHZ_PLUGIN_URL . '/css/privacy_settings.css' );
 }
 add_action( 'init', 'bp_authz_add_structure_css', 2 );
 

@@ -5,14 +5,14 @@
 	margin-bottom: 30px;
 }
 
-.privacy_slide_group { 
+.privacy_slide_group {
 	width: 95%;
 	margin-bottom: 30px;
 	float: right;
 	display: none;
 }
 
-.privacy_slide_single { 
+.privacy_slide_single {
 	width: 90%;
 	margin-top: 30px;
 	float: right;
@@ -53,7 +53,7 @@ table.privacy-settings th.userlist, td.userlist {
 	width: 40%;
 	text-align: center;
 }
-	
+
 /* Global and Group privacy table header CSS */
 table.privacy-settings th.group-title, td.group-selection {
 	width: 40%;
@@ -89,7 +89,7 @@ table.privacy-settings th.button-expand a {
 
 /* CSS for privacy dropdown selector */
 #acl_warning {
-	font-weight: bold; 
+	font-weight: bold;
 	text-align: center;
 	background-color: #fffeeb;
 	color: #FF8000;

@@ -3,9 +3,9 @@
 /**************************************************************
  * Finish defining constants: DO NOT CHANGE OR GALAXY WILL END.
  * That's not as bad as the universe ending, but hey, it's a
- * galaxy and it's the one we live in, so not cool. 
+ * galaxy and it's the one we live in, so not cool.
  *************************************************************/
- 
+
 define( 'BP_AUTHZ_VERSION', '1.0-RC1' );
 define( 'BP_AUTHZ_DB_VERSION', '17' );
 define( 'BP_AUTHZ_IS_INSTALLED', 1 );
@@ -28,13 +28,13 @@ define( 'BP_AUTHZ_SETTINGS_DIR', BP_AUTHZ_PLUGIN_DIR . '/' . 'settings' );
 //define( 'BP_AUTHZ_THEMES_URL', BP_AUTHZ_PLUGIN_URL . '/' . 'themes' );
 
 // Do the next three constants need to have translatable strings?
-/* Define the slug for the privacy-policy page */	
+/* Define the slug for the privacy-policy page */
 define( 'BP_AUTHZ_PRIVACY_POLICY_SLUG', 'privacy-policy' );
 
-/* Define the slug for the maintenance mode page */	
+/* Define the slug for the maintenance mode page */
 define( 'BP_AUTHZ_MAINTENANCE_SLUG', 'maintenance' );
 
-/* Define the slug for the custom home page for non-logged in users */	
+/* Define the slug for the custom home page for non-logged in users */
 define( 'BP_AUTHZ_CUSTOM_HOME_SLUG', 'welcome' );
 
 
@@ -44,7 +44,7 @@ define( 'BP_AUTHZ_CUSTOM_HOME_SLUG', 'welcome' );
  * have the slightest semblance of a moral thread, then it's
  * a good idea to not mess with the below stuff. Instead
  * of hacking the code, modify BP-Privacy's behavior with action
- * and filter functions. In other words, use one or more of the 
+ * and filter functions. In other words, use one or more of the
  * over 65 provided hooks!
  *************************************************************/
 
@@ -66,8 +66,8 @@ define( 'BP_AUTHZ_CUSTOM_HOME_SLUG', 'welcome' );
 	 * have been warned. But at least the Solar System
 	 * will be safe for the rest of us.
 	 *
-	 * See the "Using MySQL's InnoDB Storage Engine for 
-	 * the ACL Tables" in the Site Administrator's Guide 
+	 * See the "Using MySQL's InnoDB Storage Engine for
+	 * the ACL Tables" in the Site Administrator's Guide
 	 * of the BuddyPress Privacy Manual for details.
 	 ****************************************************/
 
@@ -91,18 +91,18 @@ define( 'BP_AUTHZ_CUSTOM_HOME_SLUG', 'welcome' );
  *
  * Load the Privacy Component settings array and various supporting
  * privacy files.
- * 
- * The global privacy settings array variable holds information on 
- * which privacy settings the Site Admin has picked. A non-existent 
+ *
+ * The global privacy settings array variable holds information on
+ * which privacy settings the Site Admin has picked. A non-existent
  * array element provides as much useful data as an existing one. The
- * privacy settings are stored in the wp_options table or in the 
+ * privacy settings are stored in the wp_options table or in the
  * wp_x_options table if multisite is in use--where x is the blogID
  * under which BuddyPress is installed.
  *
  * Various states of the privacy component can be ascertained including
  * whether or not the Site Admin has enabled the Privacy Component, which
  * individual Privacy Component Groups have been enabled, which ACL-settings
- * levels are active, whether the Privacy TOS should be displayed on the 
+ * levels are active, whether the Privacy TOS should be displayed on the
  * registration form, and the site's overall lockdown status.
  *
  * @global $bp The global BuddyPress settings variable created in bp_core_setup_globals()
@@ -113,10 +113,10 @@ define( 'BP_AUTHZ_CUSTOM_HOME_SLUG', 'welcome' );
  */
 function bp_authz_load_settings_and_files() {
 	global $bp_authz_settings;
-	
+
 	$bp_authz_settings = apply_filters( 'bp_authz_admin_options_set', get_option( 'bp_authz_admin_settings_options' ) );
-		
-	/** Finally, load these multi-purpose files containing the privacy API, 
+
+	/** Finally, load these multi-purpose files containing the privacy API,
 	 * the ACL classes & methods, various filters, user privacy settings forms
 	 * menu options, and the listbox AJAX function.
 	 */
@@ -138,10 +138,10 @@ add_action( 'bp_authz_init', 'bp_authz_load_settings_and_files', 1 );
  */
 function bp_authz_setup_globals() {
 	global $bp, $wpdb;
-	
+
 	/* For internal identification */
 	$bp->authz->id = BP_AUTHZ_SLUG;
-	
+
 	$bp->authz->table_name_acl_main = $wpdb->base_prefix . 'bp_authz_acl_main';
 	$bp->authz->table_name_acl_lists = $wpdb->base_prefix . 'bp_authz_acl_lists';
 	$bp->authz->image_base = BP_AUTHZ_PLUGIN_URL . '/images'; // not used at this time
@@ -152,7 +152,7 @@ function bp_authz_setup_globals() {
 
 	/* Register this in the active components array */
 	$bp->active_components[$bp->authz->slug] = $bp->authz->id;
-	
+
 }
 add_action( 'bp_setup_globals', 'bp_authz_setup_globals' );
 
@@ -162,7 +162,7 @@ add_action( 'bp_setup_globals', 'bp_authz_setup_globals' );
  *
  * Register 'privacy' as a root component and a few
  * special theme slugs
- */ 
+ */
 function bp_authz_register_root_component() {
 	bp_core_add_root_component( BP_AUTHZ_SLUG );
 	bp_core_add_root_component( BP_AUTHZ_PRIVACY_POLICY_SLUG );
@@ -180,19 +180,19 @@ add_action( 'bp_setup_root_components', 'bp_authz_register_root_component' );
  */
 function bp_authz_setup_acl_levels() {
 	global $bp, $bp_authz_settings;
-	
+
 	/* Initialize ACL-level array. ACL elements are initialized
 	 * as disabled ( 'enabled' => 0 ).
 	 */
-	$bp->authz->bpaz_acl_levels = array( 
+	$bp->authz->bpaz_acl_levels = array(
 		__( 'All Users', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 0, 'enabled' => 0 ),
 		__( 'Logged in Users', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 1, 'enabled' => 0 ),
 		__( 'Friends', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 2, 'enabled' => 0 ),
 		__( 'Members of These Groups', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 3, 'enabled' => 0 ),
 		__( 'These Users Only', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 4, 'enabled' => 0 ),
-		__( 'Only Me', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 5, 'enabled' => 0 )	
+		__( 'Only Me', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 5, 'enabled' => 0 )
 	 );
-	
+
 	/* Next, enable all ACL levels in the ACL array that the Site Admin has selected.
 	 * This is a simple process as the existence of any element in the below array
 	 * indicates that a given ACL level has been enabled.
@@ -207,16 +207,16 @@ add_action( 'bp_authz_init', 'bp_authz_setup_acl_levels', 1 );
 
 /****************************************************************
  * Privacy Table Install & Upgrade Functions
- * 
+ *
  * These three functions deal with installing and upgrading the
  * Privacy Table in the MySQL database, and with initializing the
- * Admin settings options. If the stored value for 
- * bp-authz-db-version in the wp_usermeta table is lower than 
+ * Admin settings options. If the stored value for
+ * bp-authz-db-version in the wp_usermeta table is lower than
  * the value held in the constant BP_AUTHZ_DB_VERSION, then
  * bp_authz_install_upgrade() will be fired.
  *
  ***************************************************************/
- 
+
 /**
  * bp_authz_check_installed()
  *
@@ -224,7 +224,7 @@ add_action( 'bp_authz_init', 'bp_authz_setup_acl_levels', 1 );
  * If BP_AUTHZ_DB_VERSION is greater than (newer than) the version
  * stored in the WP options table, then sript will be triggered.
  */
-function bp_authz_check_installed() {	
+function bp_authz_check_installed() {
 	global $wpdb, $bp;
 
 	if ( !is_super_admin() )
@@ -244,23 +244,23 @@ add_action( 'admin_menu', 'bp_authz_check_installed' );
  */
 function bp_authz_install_upgrade() {
 	global $wpdb, $bp, $bp_authz_settings;
-	
+
 	if ( !empty($wpdb->charset) )
 		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-	 
+
 	// Create tables using the InnoDB storage engine
 	if ( BP_AUTHZ_USE_INNODB == true ) {
-	
+
 		$engine_collation_main = "{$charset_collate} ENGINE=INNODB";
 		$engine_collation_child = ", FOREIGN KEY (id_main) REFERENCES {$bp->authz->table_name_acl_main}(id) ON UPDATE CASCADE ON DELETE CASCADE) {$charset_collate} ENGINE=INNODB";
-	
+
 	// Create tables using the default MyISAM storage engine
 	} else {
-	
+
 		$engine_collation_main = $charset_collate;
 		$engine_collation_child = ") {$charset_collate}";
 	}
-	
+
 	$sql[] = "CREATE TABLE {$bp->authz->table_name_acl_main} (
 		  		id int unsigned NOT NULL auto_increment,
 		  		user_id bigint unsigned NOT NULL,
@@ -275,7 +275,7 @@ function bp_authz_install_upgrade() {
 		  		INDEX filtered_item (filtered_item(30)),
 		  		INDEX item_id (item_id)
 		 	   ) {$engine_collation_main};";
- 
+
 	$sql[] = "CREATE TABLE {$bp->authz->table_name_acl_lists} (
 		  		id bigint unsigned NOT NULL auto_increment,
 		  		id_main int unsigned NOT NULL,
@@ -288,11 +288,11 @@ function bp_authz_install_upgrade() {
 		 	   {$engine_collation_child};";
 
 	require_once( ABSPATH . 'wp-admin/upgrade-functions.php' );
-	
+
 	dbDelta($sql);
-	
+
 	update_site_option( 'bp-authz-db-version', BP_AUTHZ_DB_VERSION );
-	
+
 	// Initialize the privacy settings' options
 	if( empty( $bp_authz_settings ) )
 		bp_authz_initialize_settings();
@@ -306,14 +306,14 @@ function bp_authz_install_upgrade() {
  * option. This ensures that the component and all of its filters
  * are enabled at install.
  */
- 
+
 function bp_authz_initialize_settings() {
 	global $bp;
 
 	$name = "bp_authz_admin_settings_options";
 
 	//*** Note: blogs and groups should be enable once those features are available in v1.0-RC2
-	
+
 	// Create array with desired, initial BuddyPress Privacy Component Settings
 	$bp->authz->initialize_settings = array(
 		'site_wide' => '1',
@@ -345,9 +345,9 @@ function bp_authz_update_message() {
 
 /****************************************************************
  * Internationalization Function
- * 
+ *
  * All translations of BPAz should be placed in the language
- * directory. If a translation of the Privacy Component does not 
+ * directory. If a translation of the Privacy Component does not
  * exist in your language, please contribute to the overall
  * BuddyPress project by creating one!
  *
@@ -355,23 +355,23 @@ function bp_authz_update_message() {
 
 /**
  * bp_authz_load_textdomain()
- * 
+ *
  * Load the BPAz translation file for current language
  */
 function bp_authz_load_textdomain() {
 
 	/* First get locale file if it exists */
 	$locale = apply_filters( 'bp_authz_locale', get_locale() );
-	
+
 	/* If locale file exists, create path to .mo file and try to load */
 	if ( !empty( $locale ) ) {
-		
+
 		/* path to .mo file */
 		$mofile_path = sprintf( '%s/languages/%s-%s.mo', BP_AUTHZ_PLUGIN_DIR, BP_AUTHZ_PLUGIN_NAME, $locale );
-		
+
 		/* Allow filtering of file path */
 		$mofile = apply_filters( 'bp_authz_mofile', $mofile_path );
-		
+
 		if ( file_exists( $mofile ) ) {
 			load_textdomain( BP_AUTHZ_PLUGIN_NAME, $mofile );
 		}
@@ -382,16 +382,16 @@ add_action ( 'bp_authz_init', 'bp_authz_load_textdomain', 2 );
 
 /****************************************************************
  * Privacy Administration Functions
- * 
+ *
  * The BuddyPress Privacy Component allows for some customization
  * of its functionality via an admin menu in WP's backend. From
- * turning off the filtering functions of the entire component 
- * (without deactivating it), to turning off filtering of single, 
+ * turning off the filtering functions of the entire component
+ * (without deactivating it), to turning off filtering of single,
  * selected privacy groups, to choosing which ACL levels to make
  * active.
  *
  ***************************************************************/
- 
+
 /**
  * bp_authz_add_privacy_admin_menu()
  *
@@ -399,16 +399,16 @@ add_action ( 'bp_authz_init', 'bp_authz_load_textdomain', 2 );
  */
 function bp_authz_add_privacy_admin_menu() {
 	global $wpdb, $bp, $menu;
-	
+
 	/* Load admin functionality only when site admin is in wp-admin area */
 	if ( !is_super_admin() )
 		return false;
-	
+
 	require ( BP_AUTHZ_PLUGIN_DIR . '/bp-authz-admin.php' );
-	
+
 	/* Add the Privacy Settings menu under the "BuddyPress" menu for site administrators */
 	add_submenu_page( 'bp-general-settings', __( 'Privacy Settings', BP_AUTHZ_PLUGIN_NAME ), __( 'Privacy Settings', BP_AUTHZ_PLUGIN_NAME ), 'manage_options', 'bp_authz_admin_settings', 'bp_authz_admin_settings_options' );
-		
+
 }
 add_action( 'admin_menu', 'bp_authz_add_privacy_admin_menu', 10 );
 
@@ -416,7 +416,7 @@ add_action( 'admin_menu', 'bp_authz_add_privacy_admin_menu', 10 );
 /******************************************************************************
  * Activity Functions
  *
- * These functions handle the registering, recording, and deleting of activity 
+ * These functions handle the registering, recording, and deleting of activity
  * actions for the user and for this specific component.
  *
  ******************************************************************************/
@@ -424,11 +424,11 @@ add_action( 'admin_menu', 'bp_authz_add_privacy_admin_menu', 10 );
 /**
  * bp_authz_register_privacy_activity_actions()
  *
- * Register the activity stream actions for the Privacy Component 
+ * Register the activity stream actions for the Privacy Component
  */
 function bp_authz_register_privacy_activity_actions() {
 	global $bp;
-	
+
 	if ( !function_exists( 'bp_activity_set_action' ) )
 		return false;
 
@@ -443,9 +443,9 @@ add_action( 'bp_init', 'bp_authz_register_privacy_activity_actions', 3 );
  * BPAz Data Functions
  *
  * These functions handle the initiating of retrieving, recording, and deleting of
- * privacy data in the xx_bp_authz_acl_xx tables. Users can set the access rights 
+ * privacy data in the xx_bp_authz_acl_xx tables. Users can set the access rights
  * they grant to each of their BuddyPress' core component datasets. The set of all
- * privacy records for a given user is called their BPAz Access Control List 
+ * privacy records for a given user is called their BPAz Access Control List
  * (BPAz ACL).
  *
  **********************************************************************************/
@@ -460,7 +460,7 @@ add_action( 'bp_init', 'bp_authz_register_privacy_activity_actions', 3 );
  */
 function bp_authz_save_user_acl_array_main( $id, $user_id, $filtered_component, $filtered_item, $item_id, $old_lists_array, $bpaz_level, $group_user_list_id_array ) {
 	global $bp;
-			
+
 	//***
 	/*
 	echo '<br />Saving Main ACL Data<br />';
@@ -472,7 +472,7 @@ function bp_authz_save_user_acl_array_main( $id, $user_id, $filtered_component, 
 	*/
 
 	$acl_main_record = new BP_Authz_ACL_Main();
-	
+
 	$acl_main_record->id = $id;
 	$acl_main_record->user_id = $user_id;
 	$acl_main_record->filtered_component = wp_filter_kses( $filtered_component );
@@ -482,7 +482,7 @@ function bp_authz_save_user_acl_array_main( $id, $user_id, $filtered_component, 
 	$acl_main_record->bpaz_level = $bpaz_level;
 	$acl_main_record->last_updated = time();
 	$acl_main_record->group_user_list_id_array = $group_user_list_id_array;
-	
+
 	return $acl_main_record->save();
 }
 
@@ -497,7 +497,7 @@ function bp_authz_retrieve_user_acl_dataset( $user_id ) {
 
 	if ( !$user_id )
 		return false;
-	
+
 	return BP_Authz_ACL_Main::get_user_acl_dataset( $user_id );
 }
 
@@ -512,7 +512,7 @@ function bp_authz_retrieve_user_acl_recordset( $user_id, $filtered_component ) {
 
 	if ( !$user_id )
 		return false;
-	
+
 	return BP_Authz_ACL_Main::get_user_acl_recordset_by_component( $user_id, $filtered_component );
 }
 
@@ -527,7 +527,7 @@ function bp_authz_retrieve_user_acl_record_using_id( $id ) {
 
 	if ( !$id )
 		return false;
-	
+
 	return BP_Authz_ACL_Main::get_user_acl_privacy_item_by_id( $id );
 }
 
@@ -542,7 +542,7 @@ function bp_authz_retrieve_user_acl_record_id_not_known( $user_id, $filtered_com
 
 	if ( !$user_id )
 		return false;
-	
+
 	return BP_Authz_ACL_Main::get_user_acl_privacy_item_no_id( $user_id, $filtered_component, $filtered_item, $item_id );
 }
 
@@ -558,26 +558,26 @@ function bp_authz_retrieve_user_acl_record_id_not_known( $user_id, $filtered_com
  */
 function bp_authz_delete_user_acl_record( $acl_record_to_delete ) {
 	global $bp;
-	
+
 	//***
 	//echo "<br />PreProcessing --> Record ID to delete: {$acl_record_to_delete}.<br />";
 
 	return BP_Authz_ACL_Main::delete( $acl_record_to_delete );
-		
+
 }
 
 
 /******************************************************************************
  * Special Functions
  *
- * These functions handle special use cases where users or groups are deleted, 
+ * These functions handle special use cases where users or groups are deleted,
  * or a user leaves a hidden group and the impact that those events can have
  * on the data integrity of the ACL Main and ACL Lists tables.
  *
  * The below three functions are not yet used nor tested.
  *
  ******************************************************************************/
-   
+
 // BELOW REQUIRES FURTHER DEVELOPMENT AND TESTING
 
 /**
@@ -594,10 +594,10 @@ function bp_authz_delete_user_acl_record( $acl_record_to_delete ) {
  *
  */
 function bp_authz_remove_data_on_user_deletion( $user_id ) {
-	
+
 	// This removes all of the deleted user's ACL recordsets
 	BP_Authz_ACL_Main::delete_select_user_acl_records( $user_id );
-	
+
 	/* Delete all occurrences of deleted user in the user_group_id field
 	 * of xx_bp_authz_acl_lists table. In other words, it removes any
 	 * records containing that $user_id from other users' ACL recordsets.
@@ -649,10 +649,10 @@ function bp_authz_remove_data_on_group_deletion( $group_id ) {
  */
 function bp_authz_remove_data_on_user_leaving_hidden_group( $group_id, $user_id ) {
 	global $bp, $bp_site_groups;
-	
+
 	// Is this group a hidden group? If so, delete all group references from ACL Lists table
 	foreach ( $bp_site_groups as $privacykey => $firstvalue ) {
-	
+
 		$group_list_id = $firstvalue['id'];
 		$group_list_name = $firstvalue['name'];
 		$group_list_status = $firstvalue['status'];
@@ -675,5 +675,5 @@ function bp_authz_remove_data_on_user_leaving_hidden_group( $group_id, $user_id 
  * See future.txt for functions that should have cron jobs
  *
  ********************************************************************************/
- 
+
 ?>

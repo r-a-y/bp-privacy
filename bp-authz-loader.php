@@ -15,7 +15,7 @@ Network: true
 Copyright 2009 - 2011 Jeff Sayre and SayreMedia, Inc.
 
 This plugin is a release candidate version to be used only in a development
-sandbox and not in a production environment. Use at your own risk. This 
+sandbox and not in a production environment. Use at your own risk. This
 plugin is also not being developed or supported anymore by the author.
 It is released to the BuddyPress community for it to be adopted and further
 developed.
@@ -49,27 +49,27 @@ See disclaimer.txt which is distributed with this plugin
  * bpaz_init()
  *
  * Initialize basic constants and make sure BuddyPress
- * is installed and activated. If true, then allow for 
+ * is installed and activated. If true, then allow for
  * Privacy Component to finish loading.
  *
  * @since 0.4
  */
 function bpaz_init() {
-		
+
 	/* Define the component's parent folder name */
 	define( 'BP_AUTHZ_PLUGIN_NAME', 'bp-privacy' );
-	
+
 	/* Define component's directory and URL Paths */
 	define( 'BP_AUTHZ_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . BP_AUTHZ_PLUGIN_NAME );
 	define( 'BP_AUTHZ_PLUGIN_URL', WP_PLUGIN_URL . '/' . BP_AUTHZ_PLUGIN_NAME );
-	
+
 	/* BuddyPress is installed and activated, finish initialization and go! */
 	require_once( BP_AUTHZ_PLUGIN_DIR . '/bp-authz-core.php' );
-	
+
 	/**
 	 * Privacy Action Hook
 	 *
-	 * This hook allows those plugins that are dependent on 
+	 * This hook allows those plugins that are dependent on
 	 * the BuddyPress Privacy Component to hook into it in a safe
 	 * manner -- only when it is installed and activated. If your
 	 * plugin extends privacy filtering to its services, then make
@@ -79,9 +79,9 @@ function bpaz_init() {
 	 * Alternatively, you can check for the existence of bpaz_init() and
 	 * only include your privacy services if it exists.
 	 */
-	
+
 	do_action( 'bp_authz_init' );
-	
+
 }
 add_action( 'bp_include', 'bpaz_init', 1 );
 
@@ -111,8 +111,8 @@ register_activation_hook( 'bp-privacy/bp-authz-loader.php', 'bp_authz_plugin_act
 function bp_authz_plugin_deactivated() {
 	if ( !function_exists( 'delete_site_option') )
 		return false;
-	
-	/* See the following in the Developer's Guide section of the BuddyPress 
+
+	/* See the following in the Developer's Guide section of the BuddyPress
 	 * Privacy Manual for more details:
 	 *
 	 * 	- Resetting BP Privacy's Metadata Settings
@@ -138,7 +138,7 @@ function bp_authz_plugin_deactivated() {
 	delete_site_option( 'bp-privacy-acceptance' );
 	delete_option( 'bp_authz_admin_settings_options' );
 	*/
-	
+
 	do_action( 'bp_authz_loader_deactivate' );
 }
 register_deactivation_hook( 'bp-privacy/bp-authz-loader.php', 'bp_authz_plugin_deactivated' );
