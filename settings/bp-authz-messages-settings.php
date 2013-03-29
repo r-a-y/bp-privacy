@@ -141,7 +141,7 @@ function bp_authz_screen_messaging_privacy_content() {
 						} else {
 							$acl_id = $acl_row->id;
 							$acl_bpaz = $acl_row->bpaz_level;
-							$acl_group_user_list = $acl_row->lists;
+							$acl_group_user_list = ! empty( $acl_row->lists ) ? $acl_row->lists : null;
 						}
 
 						/* NOTE: The value string in the hidden "group_user_list_old" $_POST array
