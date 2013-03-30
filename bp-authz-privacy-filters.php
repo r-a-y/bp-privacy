@@ -162,6 +162,8 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 
 								$user_type = bp_authz_determine_user_type( $check_if_friend );
 
+								$group_user_list = array();
+
 								/* If the ACL equals 3 or 4 and there is list data, then the
 								 * list needs to be parsed.
 								 */
@@ -269,6 +271,8 @@ function bp_authz_filter_profile_by_acl( $fields ) {
 
 						$user_type = bp_authz_determine_user_type( $check_if_friend );
 
+						$group_user_list = array();
+
 						/* If the ACL equals 3 or 4 and there is list data, then the
 						 * list needs to be parsed.
 						 */
@@ -351,6 +355,8 @@ function bp_authz_filter_friends_list_by_acl() {
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
 
+			$group_user_list = array();
+
 			/* If the ACL equals 3 or 4 and there is list data, then the
 			 * list needs to be parsed.
 			 */
@@ -414,6 +420,8 @@ function bp_authz_filter_friends_count_tab( $count ) {
 			$check_if_friend = $bp->displayed_user->id;
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
+
+			$group_user_list = array();
 
 			/* If the ACL equals 3 or 4 and there is list data, then the
 			 * list needs to be parsed.
@@ -487,6 +495,8 @@ function bp_authz_filter_add_friends_button_by_acl( $friend_button ) {
 
 				$user_type = bp_authz_determine_user_type( $check_if_friend );
 
+				$group_user_list = array();
+
 				/* If the ACL equals 3 or 4 and there is list data, then the
 				 * list needs to be parsed.
 				 */
@@ -552,6 +562,8 @@ function bp_authz_filter_send_message_button_by_acl( $message_button_string ) {
 			$check_if_friend = $bp->displayed_user->id;
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
+
+			$group_user_list = array();
 
 			/* If the ACL equals 3 or 4 and there is list data, then the
 			 * list needs to be parsed.
@@ -670,6 +682,8 @@ function bp_authz_filter_compose_messages_by_acl( $recipients ) {
 				$check_if_friend = $bp->displayed_user->id;
 
 				$user_type = bp_authz_determine_user_type( $check_if_friend );
+
+				$group_user_list = array();
 
 				/* If the ACL equals 3 or 4 and there is list data, then the
 				 * list needs to be parsed.
