@@ -229,6 +229,6 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	do_action( 'bp_authz_add_settings_nav', $default_function, $default_subnav );
 
 }
-add_action( 'bp_setup_nav', 'bp_authz_load_settings_files_and_add_settings_nav' );
+add_action( 'bp_setup_nav', 'bp_authz_load_settings_files_and_add_settings_nav', 1 );
 
 ?>
