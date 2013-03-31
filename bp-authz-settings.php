@@ -37,14 +37,18 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 
 		// Check for deactivated BP Core component before including each privacy settings form
 
-		/* See below comment for why we're using function_exist() instead of isset()
-		 * for just the first check below.
-		 */
+		/*
+		// COMMENT OUT PROFILE PRIVACY FOR NOW
+		//
+		// - will probably conflict with BP Core's profile privacy
+		// - needs investigation
+		//
 		if ( bp_is_active( 'xprofile' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'profile' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php' );
 			}
 		}
+		*/
 
 		if( bp_is_active( 'activity' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'activity' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-activity-settings.php') ) {
