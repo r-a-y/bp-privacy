@@ -366,7 +366,7 @@ class BP_Authz_ACL_Main {
 		global $wpdb, $bp;
 
 		if ( !$user_id )
-			$user_id = $bp->displayed_user->id;
+			$user_id = bp_displayed_user_id();
 
 		$acl = $wpdb->prepare("SELECT * FROM {$bp->authz->table_name_acl_main} AS p LEFT JOIN {$bp->authz->table_name_acl_lists} AS c ON p.id = c.id_main WHERE user_id = %d", $user_id );
 
@@ -387,7 +387,7 @@ class BP_Authz_ACL_Main {
 		global $wpdb, $bp;
 
 		if ( !$user_id )
-			$user_id = $bp->displayed_user->id;
+			$user_id = bp_displayed_user_id();
 
 		$acl = $wpdb->prepare("SELECT * FROM {$bp->authz->table_name_acl_main} AS p LEFT JOIN {$bp->authz->table_name_acl_lists} AS c ON p.id = c.id_main WHERE user_id = %d AND filtered_component = %s", $user_id, $filtered_component );
 
@@ -438,7 +438,7 @@ class BP_Authz_ACL_Main {
 		global $wpdb, $bp;
 
 		if ( !$user_id )
-			$user_id = $bp->displayed_user->id;
+			$user_id = bp_displayed_user_id();
 
 		/* As we don't have the ACL Main table record id, we cannot join to the ACL Lists table. The id field from the
 		 * ACL Main table is the linked to id_main field of the ACL Lists table. Without the id, we cannot JOIN the two

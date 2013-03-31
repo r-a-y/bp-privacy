@@ -114,7 +114,7 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 								$user_to_filter = $user_to_filter;
 							} else {
 								/* On a member's profile page; use their id */
-								$user_to_filter = $bp->displayed_user->id;
+								$user_to_filter = bp_displayed_user_id();
 							}
 
 							// Next, need to recreate the unique activity action item ID
@@ -158,7 +158,7 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 
 								$acl_level = $acl_row->bpaz_level;
 
-								$check_if_friend = $bp->displayed_user->id;
+								$check_if_friend = bp_displayed_user_id();
 
 								$user_type = bp_authz_determine_user_type( $check_if_friend );
 
@@ -260,14 +260,14 @@ function bp_authz_filter_profile_by_acl( $fields ) {
 
 					$item_id = $value;
 
-					$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $bp->displayed_user->id, $component, $filtered_item, $item_id);
+					$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
 
 					// filter profile field if record not empty; if empty, skip to next key
 					if ( !empty( $acl_row) ) {
 
 						$acl_level = $acl_row->bpaz_level;
 
-						$check_if_friend = $bp->displayed_user->id;
+						$check_if_friend = bp_displayed_user_id();
 
 						$user_type = bp_authz_determine_user_type( $check_if_friend );
 
@@ -344,14 +344,14 @@ function bp_authz_filter_friends_list_by_acl() {
 
 		$item_id = 0;
 
-		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $bp->displayed_user->id, $component, $filtered_item, $item_id);
+		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
 
 		// filter profile field if record not empty; if empty, skip to next key
 		if ( !empty( $acl_row) ) {
 
 			$acl_level = $acl_row->bpaz_level;
 
-			$check_if_friend = $bp->displayed_user->id;
+			$check_if_friend = bp_displayed_user_id();
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
 
@@ -409,15 +409,15 @@ function bp_authz_filter_friends_count_tab( $count ) {
 		$filtered_item = "friends_list";
 
 		$item_id = 0;
-
-		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $bp->displayed_user->id, $component, $filtered_item, $item_id);
+var_dump( bp_displayed_user_id() );
+		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
 
 		// filter profile field if record not empty; if empty, skip to next key
 		if ( !empty( $acl_row) ) {
 
 			$acl_level = $acl_row->bpaz_level;
 
-			$check_if_friend = $bp->displayed_user->id;
+			$check_if_friend = bp_displayed_user_id();
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
 
@@ -484,14 +484,14 @@ function bp_authz_filter_add_friends_button_by_acl( $friend_button ) {
 
 			$item_id = 0;
 
-			$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $bp->displayed_user->id, $component, $filtered_item, $item_id);
+			$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
 
 			// filter profile field if record not empty; if empty, skip to next key
 			if ( !empty( $acl_row) ) {
 
 				$acl_level = $acl_row->bpaz_level;
 
-				$check_if_friend = $bp->displayed_user->id;
+				$check_if_friend = bp_displayed_user_id();
 
 				$user_type = bp_authz_determine_user_type( $check_if_friend );
 
@@ -552,14 +552,14 @@ function bp_authz_filter_send_message_button_by_acl( $message_button_string ) {
 
 		$item_id = 0;
 
-		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $bp->displayed_user->id, $component, $filtered_item, $item_id);
+		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
 
 		// filter profile field if record not empty; if empty, skip to next key
 		if ( !empty( $acl_row) ) {
 
 			$acl_level = $acl_row->bpaz_level;
 
-			$check_if_friend = $bp->displayed_user->id;
+			$check_if_friend = bp_displayed_user_id();
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
 
@@ -664,7 +664,7 @@ function bp_authz_filter_compose_messages_by_acl( $recipients ) {
 
 			$user_type = bp_authz_determine_user_type( $check_if_friend );
 
-			/** Cannot use $bp->displayed_user->id in the below function call; instead, need to use the
+			/** Cannot use bp_displayed_user_id() in the below function call; instead, need to use the
 			 * current recipient in the array which is represented by the variable $value. But to do that,
 			 * we first need convert username into userID
 			 */
@@ -679,7 +679,7 @@ function bp_authz_filter_compose_messages_by_acl( $recipients ) {
 
 				$acl_level = $acl_row->bpaz_level;
 
-				$check_if_friend = $bp->displayed_user->id;
+				$check_if_friend = bp_displayed_user_id();
 
 				$user_type = bp_authz_determine_user_type( $check_if_friend );
 
