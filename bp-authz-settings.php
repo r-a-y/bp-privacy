@@ -231,4 +231,114 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 }
 add_action( 'bp_setup_nav', 'bp_authz_load_settings_files_and_add_settings_nav', 1 );
 
-?>
+/**
+ * Setup the WP Toolbar.
+ *
+ * @since 1.0-RC2
+ */
+function bp_authz_setup_admin_bar() {
+	// Bail if this is an ajax request
+	if ( defined( 'DOING_AJAX' ) )
+		return;
+
+	// Do not proceed if BP_USE_WP_ADMIN_BAR constant is not set or is false
+	if ( !bp_use_wp_admin_bar() )
+		return;
+
+	// Prevent debug notices
+	$wp_admin_nav = array();
+
+	// Menus for logged in user
+	if ( is_user_logged_in() ) {
+		// Add the privacy settings nav item if privacy is enabled
+		if( BP_AUTHZ_DISABLED == 0 && BP_AUTHZ_PSEUDO_DISABLED == 0 ) {
+			global $bp;
+
+			$privacy_link = trailingslashit( bp_loggedin_user_domain() . $bp->authz->slug );
+
+			// "Privacy" parent nav menu
+			$wp_admin_nav[] = array(
+				'parent' => $bp->my_account_menu_id,
+				'id'     => 'my-account-' . $bp->authz->id,
+				'title'  => __( 'Privacy', BP_AUTHZ_PLUGIN_NAME ),
+				'href'   => $privacy_link
+			);
+
+			// "Profile" subnav item
+			if ( bp_is_active( 'xprofile' ) && bp_privacy_filtering_active( 'profile' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $bp->authz->id,
+					'id'     => 'my-account-' . $bp->authz->id . '-xprofile',
+					'title'  => __( 'Profile Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'profile-privacy' )
+				);
+			}
+
+			// "Activity" subnav item
+			if ( bp_is_active( 'activity' ) && bp_privacy_filtering_active( 'activity' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $bp->authz->id,
+					'id'     => 'my-account-' . $bp->authz->id . '-activity',
+					'title'  => __( 'Activity Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'activity-privacy' )
+				);
+			}
+
+			// "Friends" subnav item
+			if ( bp_is_active( 'friends' ) && bp_privacy_filtering_active( 'friends' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $bp->authz->id,
+					'id'     => 'my-account-' . $bp->authz->id . '-friends',
+					'title'  => __( 'Friends Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'friends-privacy' )
+				);
+			}
+
+			// "Messages" subnav item
+			if ( bp_is_active( 'messages' ) && bp_privacy_filtering_active( 'messages' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $bp->authz->id,
+					'id'     => 'my-account-' . $bp->authz->id . '-messages',
+					'title'  => __( 'Messages Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'messages-privacy' )
+				);
+			}
+
+			// "Blogs" subnav item
+			if ( bp_is_active( 'blogs' ) && bp_privacy_filtering_active( 'blogs' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $bp->authz->id,
+					'id'     => 'my-account-' . $bp->authz->id . '-blogs',
+					'title'  => __( 'Blogs Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'blogs-privacy' )
+				);
+			}
+
+			// "Groups" subnav item
+			if ( bp_is_active( 'groups' ) && bp_privacy_filtering_active( 'groups' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $bp->authz->id,
+					'id'     => 'my-account-' . $bp->authz->id . '-groups',
+					'title'  => __( 'Groups Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'groups-privacy' )
+				);
+			}
+		}
+
+	}
+
+	// Filter the nav before adding
+	$wp_admin_nav = apply_filters( 'bp_authz_toolbar', $wp_admin_nav );
+
+	// Do we have Toolbar menus to add?
+	if ( ! empty( $wp_admin_nav ) ) {
+		global $wp_admin_bar;
+
+		// Add each admin menu
+		foreach( $wp_admin_nav as $admin_menu ) {
+			$wp_admin_bar->add_menu( $admin_menu );
+		}
+	}
+
+}
+add_action( 'bp_setup_admin_bar', 'bp_authz_setup_admin_bar', 20 );
