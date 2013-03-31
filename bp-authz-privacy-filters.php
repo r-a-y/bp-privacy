@@ -409,7 +409,7 @@ function bp_authz_filter_friends_count_tab( $count ) {
 		$filtered_item = "friends_list";
 
 		$item_id = 0;
-var_dump( bp_displayed_user_id() );
+
 		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
 
 		// filter profile field if record not empty; if empty, skip to next key
