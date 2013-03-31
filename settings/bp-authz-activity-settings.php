@@ -192,7 +192,7 @@ function bp_authz_screen_activity_privacy_content() {
 							} else {
 								$acl_id = $acl_row_global->id;
 								$acl_bpaz = $acl_row_global->bpaz_level;
-								$acl_group_user_list = $acl_row_global->lists;
+								$acl_group_user_list = ! empty( $acl_row_global->lists ) ? $acl_row_global->lists : array();
 							}
 
 							/* NOTE: The value string in the hidden "group_user_list_old" $_POST array
@@ -651,7 +651,7 @@ function bp_authz_screen_activity_privacy_content() {
 								} else {
 									$acl_id = $acl_row_single->id;
 									$acl_bpaz = $acl_row_single->bpaz_level;
-									$acl_group_user_list = $acl_row_single->lists;
+									$acl_group_user_list = ! empty( $acl_row_single->lists ) ? $acl_row_single->lists : array();
 								}
 
 								/* NOTE: The value string in the hidden "group_user_list_old" $_POST array

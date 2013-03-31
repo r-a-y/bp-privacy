@@ -545,8 +545,8 @@ function bp_authz_process_privacy_settings_array_element( $privacy_post_array_el
 	$item_id = $privacy_post_array_element['item_id'];
 	$old_lists_array = $privacy_post_array_element['group_user_list_old'];
 	$bpaz_level = $privacy_post_array_element['acl'];
-	$acl_group_list = $privacy_post_array_element['grouplist'];
-	$acl_user_list = $privacy_post_array_element['userlist'];
+	$acl_group_list = ! empty( $privacy_post_array_element['grouplist'] ) ? $privacy_post_array_element['grouplist'] : array();
+	$acl_user_list = ! empty( $privacy_post_array_element['userlist'] ) ? $privacy_post_array_element['userlist'] : array();
 
 	//***
 	/*
@@ -717,7 +717,7 @@ function bp_authz_process_privacy_settings( $privacy_post_array, $tiered = false
 				 * first check to see if a ACL global record currently exists
 				 * for component. If so, delete.
 				 */
-				if ( !$privacy_post_array['global']['save_global'] ) { // Begin if/else 2B
+				if ( ! isset( $privacy_post_array['global']['save_global'] ) ) { // Begin if/else 2B
 
 					//***
 					//echo 'Do not save global record. Checking if need to delete existing global record...<br />';
@@ -833,7 +833,7 @@ function bp_authz_process_privacy_settings( $privacy_post_array, $tiered = false
 					 * group array. However, first check to see if a ACL group record
 					 * currently exists for this group for this component. If so, delete it.
 					 */
-					if ( !$privacy_post_array['groups']["group-{$i}"]['save_group'] ) { // Begin if/else 3B
+					if ( ! isset( $privacy_post_array['groups']["group-{$i}"]['save_group'] ) ) { // Begin if/else 3B
 
 						//***
 						//echo 'Do not save group record. Checking if need to delete existing group record...<br />';
@@ -941,8 +941,8 @@ function bp_authz_process_privacy_settings( $privacy_post_array, $tiered = false
 						if ( $use_global_acl == true ) {
 
 							$privacy_post_array['groups']["group-{$i}"]['singles']["single-{$j}"]['acl'] = $global_privacy_post_array_element['acl'];
-							$privacy_post_array['groups']["group-{$i}"]['singles']["single-{$j}"]['grouplist'] = $global_privacy_post_array_element['grouplist'];
-							$privacy_post_array['groups']["group-{$i}"]['singles']["single-{$j}"]['userlist'] = $global_privacy_post_array_element['userlist'];
+							$privacy_post_array['groups']["group-{$i}"]['singles']["single-{$j}"]['grouplist'] = ! empty( $global_privacy_post_array_element['grouplist'] ) ? $global_privacy_post_array_element['grouplist'] : array();
+							$privacy_post_array['groups']["group-{$i}"]['singles']["single-{$j}"]['userlist'] = ! empty( $global_privacy_post_array_element['userlist'] ) ? $global_privacy_post_array_element['userlist'] : array();
 
 						// Store select Group ACL settings in current single's fields
 						} elseif ( $use_group_acl == true ) {
