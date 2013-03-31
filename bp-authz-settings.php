@@ -144,19 +144,12 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 
 	$default_subnav = null;
 
-	/* Here we have to check for the xprofile_install function since
-	 * BuddyPress uses the 'profile' key name for registering either
-	 * the xprofile or the WordPress profile in the active components
-	 * array. Therefore, checking for !bp_is_active( 'profile'] )
-	 * will always fail as it will be set whether or not the xprofile
-	 * component is activated.
-	 *
-	 * This should be reported as a bug in BuddyPress Trac. So, if you
-	 * are reading this, then figure out the details and report it. I'm
-	 * too tiered to do so. Besides, if you've discovered this, then
-	 * you're starting to figure out how BP Privacy works. Congratulations!
-	 */
-
+	/*
+	// COMMENT OUT PROFILE PRIVACY FOR NOW
+	//
+	// - will probably conflict with BP Core's profile privacy
+	// - needs investigation
+	//
 	//check to see if xprofile component and profile privacy filtering are both activated
 	if ( bp_is_active( 'xprofile' ) && bp_privacy_filtering_active( 'profile' ) ) {
 		if( is_null( $default_subnav ) ) {
@@ -164,11 +157,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 			$default_subnav = 'profile-privacy';
 		};
 	}
-
-	/* For the remaining checks, we can count on using the isset() function to
-	 * give us an accurate accounting of whether or not a given BP core
-	 * component is active.
-	 */
+	*/
 
 	//check to see if activity component and activity privacy filtering are both activated
 	if( bp_is_active( 'activity' ) && bp_privacy_filtering_active( 'activity' ) ) {
@@ -264,6 +253,12 @@ function bp_authz_setup_admin_bar() {
 				'href'   => $privacy_link
 			);
 
+			/*
+			// COMMENT OUT PROFILE PRIVACY FOR NOW
+			//
+			// - will probably conflict with BP Core's profile privacy
+			// - needs investigation
+			//
 			// "Profile" subnav item
 			if ( bp_is_active( 'xprofile' ) && bp_privacy_filtering_active( 'profile' ) ) {
 				$wp_admin_nav[] = array(
@@ -273,6 +268,7 @@ function bp_authz_setup_admin_bar() {
 					'href'   => trailingslashit( $privacy_link . 'profile-privacy' )
 				);
 			}
+			*/
 
 			// "Activity" subnav item
 			if ( bp_is_active( 'activity' ) && bp_privacy_filtering_active( 'activity' ) ) {

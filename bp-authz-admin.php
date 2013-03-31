@@ -28,7 +28,8 @@ function bp_authz_admin_settings_init() {
 	// Individual Privacy Object Control Settings Section
 	add_settings_section('bp_authz_admin_enable_individual_filtering', $bp_authz_admin_section_heading2, 'bp_authz_admin_enable_individual_filtering_section', 'bp_authz_admin_settings');
 
-	add_settings_field( 'bp_authz_admin_enable_profile_filtering_radio', __( 'Profile Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_profile_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
+	// COMMENT OUT PROFILE PRIVACY FOR NOW
+	//add_settings_field( 'bp_authz_admin_enable_profile_filtering_radio', __( 'Profile Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_profile_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
 
 	add_settings_field( 'bp_authz_admin_enable_activity_filtering_radio', __( 'Activity Stream Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_activity_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
 
