@@ -40,37 +40,37 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 		/* See below comment for why we're using function_exist() instead of isset()
 		 * for just the first check below.
 		 */
-		if ( function_exists( 'xprofile_install' ) ) {
+		if ( bp_is_active( 'xprofile' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'profile' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php' );
 			}
 		}
 
-		if( isset( $bp->active_components['activity'] ) ) {
+		if( bp_is_active( 'activity' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'activity' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-activity-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-activity-settings.php' );
 			}
 		}
 
-		if( isset( $bp->active_components['friends'] ) ) {
+		if( bp_is_active( 'friends' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'friends' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-friends-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-friends-settings.php' );
 			}
 		}
 
-		if( isset( $bp->active_components['messages'] ) ) {
+		if( bp_is_active( 'messages' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'messages' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-messages-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-messages-settings.php' );
 			}
 		}
 
-		if( isset( $bp->active_components['blogs'] ) ) {
+		if( bp_is_active( 'blogs' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'blogs' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-blogs-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-blogs-settings.php' );
 			}
 		}
 
-		if( isset( $bp->active_components['groups'] ) ) {
+		if( bp_is_active( 'groups' ) ) {
 			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'groups' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-groups-settings.php') ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-groups-settings.php' );
 			}
@@ -147,7 +147,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	/* Here we have to check for the xprofile_install function since
 	 * BuddyPress uses the 'profile' key name for registering either
 	 * the xprofile or the WordPress profile in the active components
-	 * array. Therefore, checking for !isset( $bp->active_components['profile'] )
+	 * array. Therefore, checking for !bp_is_active( 'profile'] )
 	 * will always fail as it will be set whether or not the xprofile
 	 * component is activated.
 	 *
@@ -158,7 +158,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	 */
 
 	//check to see if xprofile component and profile privacy filtering are both activated
-	if ( function_exists( 'xprofile_install' ) && bp_privacy_filtering_active( 'profile' ) ) {
+	if ( bp_is_active( 'xprofile' ) && bp_privacy_filtering_active( 'profile' ) ) {
 		if( is_null( $default_subnav ) ) {
 			$default_function = 'bp_authz_screen_profile_privacy';
 			$default_subnav = 'profile-privacy';
@@ -171,7 +171,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	 */
 
 	//check to see if activity component and activity privacy filtering are both activated
-	if( isset( $bp->active_components['activity'] ) && bp_privacy_filtering_active( 'activity' ) ) {
+	if( bp_is_active( 'activity' ) && bp_privacy_filtering_active( 'activity' ) ) {
 		if( is_null( $default_subnav ) ) {
 			$default_function = 'bp_authz_screen_activity_privacy';
 			$default_subnav = 'activity-privacy';
@@ -179,7 +179,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	}
 
 	//check to see if friends component and friends privacy filtering are both activated
-	if( isset( $bp->active_components['friends'] ) && bp_privacy_filtering_active( 'friends' ) ) {
+	if( bp_is_active( 'friends' ) && bp_privacy_filtering_active( 'friends' ) ) {
 		if( is_null( $default_subnav ) ) {
 			$default_function = 'bp_authz_screen_friends_privacy';
 			$default_subnav = 'friends-privacy';
@@ -187,7 +187,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	}
 
 	//check to see if messages component and messages privacy filtering are both activated
-	if( isset( $bp->active_components['messages'] ) && bp_privacy_filtering_active( 'messages' ) ) {
+	if( bp_is_active( 'messages' ) && bp_privacy_filtering_active( 'messages' ) ) {
 		if( is_null( $default_subnav ) ) {
 			$default_function = 'bp_authz_screen_messaging_privacy';
 			$default_subnav = 'messaging-privacy';
@@ -195,7 +195,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	}
 
 	//check to see if blog component and blogs privacy filtering are both activated
-	if( isset( $bp->active_components['blogs'] ) && bp_privacy_filtering_active( 'blogs' ) ) {
+	if( bp_is_active( 'blogs' ) && bp_privacy_filtering_active( 'blogs' ) ) {
 		if( is_null( $default_subnav ) ) {
 			$default_function = 'bp_authz_screen_blogs_privacy';
 			$default_subnav = 'blogs-privacy';
@@ -203,7 +203,7 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	}
 
 	//check to see if group component and groups privacy filtering are both activated
-	if( isset( $bp->active_components['groups'] ) && bp_privacy_filtering_active( 'groups' ) ) {
+	if( bp_is_active( 'groups' ) && bp_privacy_filtering_active( 'groups' ) ) {
 		if( is_null( $default_subnav ) ) {
 			$default_function = 'bp_authz_screen_groups_privacy';
 			$default_subnav = 'groups-privacy';
