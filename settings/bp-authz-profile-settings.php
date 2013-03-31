@@ -216,7 +216,7 @@ function bp_authz_screen_profile_privacy_content() {
 						<td class="group-selection">
 							<?php _e( 'Who Can View', BP_AUTHZ_PLUGIN_NAME ) ?>
 							<select name="bp-authz[global][acl]" id="global-acl">
-								<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_row_global->bpaz_level ); ?>
+								<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_bpaz ); ?>
 							</select>
 							<?php if( $acl_inactive ) {
 									echo "<div id='acl_warning'><p>" . __( 'Please select a new option.', BP_AUTHZ_PLUGIN_NAME ) . "</p></div>";
@@ -448,7 +448,7 @@ function bp_authz_screen_profile_privacy_content() {
 									<td class="group-selection">
 										<?php _e( 'Who Can View', BP_AUTHZ_PLUGIN_NAME ) ?>
 										<select name="bp-authz[groups][group-<?php echo $group_rec ?>][acl]" id="group-acl-<?php echo $acl_rec; ?>">
-											<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_row_group->bpaz_level ); ?>
+											<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_bpaz ); ?>
 										</select>
 										<?php if( $acl_inactive ) {
 												echo "<div id='acl_warning'><p>" . __( 'Please select a new option.', BP_AUTHZ_PLUGIN_NAME ) . "</p></div>";
@@ -628,7 +628,7 @@ function bp_authz_screen_profile_privacy_content() {
 									<?php
 									// Output the dropdown box ?>
 									<select name="bp-authz[groups][group-<?php echo $group_rec ?>][singles][single-<?php echo $single_rec ?>][acl]" id="single-acl-<?php echo $acl_rec; ?>">
-										<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_row_single->bpaz_level ); ?>
+										<?php $acl_inactive = bp_authz_output_bpaz_select( $acl_bpaz ); ?>
 									</select>
 									<?php if( $acl_inactive ) {
 											echo "<div id='acl_warning'><p>" . __( 'Please select a new option.', BP_AUTHZ_PLUGIN_NAME ) . "</p></div>";
