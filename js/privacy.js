@@ -206,13 +206,13 @@ jQuery(document).ready(function() {
 			
 			if((slider_group == "global") || (slider_group == "group")) {
 				if(link_text == bpaz_more) {
-					jQuery("th#" + headerid + " p").html("<a href='#'>" + bpaz_fewer + "</a>");		
+					jQuery("th#" + headerid + " p").html("<a href='javascript:;'>" + bpaz_fewer + "</a>");		
 					jQuery("table#" + tableid + " select").attr("disabled", true);
 					jQuery("table#" + tableid + " td.group-save input").attr("checked", false);
 					jQuery("table#" + tableid + " td.group-save input").attr("disabled", true);
 					
 				} else if(link_text == bpaz_fewer) {
-					jQuery("th#" + headerid + " p").html("<a href='#'>" + bpaz_more + "</a>");
+					jQuery("th#" + headerid + " p").html("<a href='javascript:;'>" + bpaz_more + "</a>");
 					jQuery("table#" + tableid + " select").attr("disabled", false);
 					jQuery("table#" + tableid + " input").attr("disabled", false);
 					

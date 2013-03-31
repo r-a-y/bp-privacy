@@ -178,7 +178,7 @@ function bp_authz_screen_activity_privacy_content() {
 						<th class="group-second"></th>
 						<th class="group-third"></th>
 						<th class="button-expand" id="expand-button-<?php echo $acl_rec; ?>">
-							<p><a href="#"><?php echo $bpaz_more_options; ?></a></p>
+							<p><a href="javascript:;"><?php echo $bpaz_more_options; ?></a></p>
 
 							<?php
 
@@ -416,7 +416,7 @@ function bp_authz_screen_activity_privacy_content() {
 							<th class="group-second"></th>
 							<th class="group-third"></th>
 							<th class="button-expand" id="expand-button-<?php echo $acl_rec; ?>">
-								<p><a href="#"><?php echo $bpaz_more_options; ?></a></p>
+								<p><a href="javascript:;"><?php echo $bpaz_more_options; ?></a></p>
 
 								<?php
 
