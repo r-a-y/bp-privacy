@@ -174,7 +174,7 @@ function bp_authz_screen_activity_privacy_content() {
 			<table class="privacy-settings" id="global-activity-privacy-settings-<?php echo $acl_rec; ?>">
 				<thead>
 					<tr>
-						<th class="group-title"><h5><?php _e( 'Global Activity Privacy', BP_AUTHZ_PLUGIN_NAME ) ?></h5></th>
+						<th class="group-title"><h5><?php _e( 'Global Activity', BP_AUTHZ_PLUGIN_NAME ) ?></h5></th>
 						<th class="group-second"></th>
 						<th class="group-third"></th>
 						<th class="button-expand" id="expand-button-<?php echo $acl_rec; ?>">
@@ -412,7 +412,30 @@ function bp_authz_screen_activity_privacy_content() {
 				<table class="privacy-settings" id="group-activity-privacy-settings-<?php echo $acl_rec; ?>">
 					<thead>
 						<tr>
-							<th class="group-title"><h5><?php echo ucfirst( $actionkey ) . " " ?><?php _e( 'Activity', BP_AUTHZ_PLUGIN_NAME ) ?></h5></th>
+							<th class="group-title">
+								<h5>
+								<?php
+									switch ( $actionkey ) {
+										case 'activity' :
+											echo __( 'Status Updates', BP_AUTHZ_PLUGIN_NAME );
+											break;
+
+										case 'bbpress' :
+											echo __( 'Forums', BP_AUTHZ_PLUGIN_NAME );
+											break;
+
+										default :
+											if ( $actionkey == 'xprofile' )
+												$actionkey = 'profile';
+
+											$label = ! empty( $bp->{$actionkey}->name ) ? $bp->{$actionkey}->name : ucfirst( $actionkey );
+
+											echo $label;
+											break;
+									}
+								?>
+								</h5>
+							</th>
 							<th class="group-second"></th>
 							<th class="group-third"></th>
 							<th class="button-expand" id="expand-button-<?php echo $acl_rec; ?>">
