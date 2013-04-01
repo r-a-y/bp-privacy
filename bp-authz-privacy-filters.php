@@ -148,11 +148,11 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 							// Generate ASCII-based artificial integer
 							$item_id = NULL;
 
-						    for ($j = 0; $j < strlen($code_final); $j++) {
-						    	$item_id .= ord( $code_final[$j] );
-						    }
+							for ( $j = 0; $j < strlen( $code_final ); $j++ ) {
+								$item_id .= ord( $code_final[$j] );
+							}
 
-							$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $user_to_filter, $component, $filtered_item, $item_id);
+							$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $user_to_filter, $component, $filtered_item, $item_id );
 
 							// filter profile field if record not empty; if empty, skip to next key
 							if ( !empty( $acl_row) ) {
