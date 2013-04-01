@@ -143,6 +143,9 @@ class BP_Authz_ACL_Main {
 			} elseif ( $this->bpaz_level == 4 ) {
 				$list_type_old = 'userlist';
 				$list_type_new = 'user_list';
+			} else {
+				$list_type_old = null;
+				$list_type_new = null;
 			}
 
 			// Set the ACL Lists table child record foreign key field (id_main) to that of the current ACL Main id record
