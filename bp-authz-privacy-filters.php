@@ -558,36 +558,6 @@ function bp_authz_filter_send_message_button_by_acl( $button ) {
 add_filter( 'bp_get_send_message_button', 'bp_authz_filter_send_message_button_by_acl', 5, 1 );
 
 
-// NOTE: THIS IS FOR TESTING ONLY AND IS CURRENTLY DISABLED
-/**
- * bp_authz_test_filter_compose_messages_by_acl()
- *
- * Filters the recipient list in a composed message to make sure that any
- * recipient who does not want to receive a message from the user is removed
- */
-function bp_authz_test_filter_compose_messages_by_acl( $recipients ) {
-
-	$filtered_recipients = $recipients;
-
-	// need to convert any display names into userids
-
-	/* Loop the recipients and convert all usernames to user_ids where needed
-		foreach( (array) $recipients as $recipient ) {
-			if ( is_numeric( trim( $recipient ) ) )
-				$recipient_ids[] = (int)trim( $recipient );
-
-			if ( $recipient_id = bp_core_get_userid( trim( $recipient ) ) )
-				$recipient_ids[] = (int)$recipient_id;
-		}
-	*/
-
-	$filtered_recipients = (array)"tester1";
-
-	return $filtered_recipients;
-}
-//add_filter( 'bp_messages_recipients', 'bp_authz_test_filter_compose_messages_by_acl', 5, 1 );
-
-
 /**
  * bp_authz_filter_compose_messages_by_acl()
  *
