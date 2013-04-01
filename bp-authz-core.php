@@ -542,7 +542,7 @@ function bp_authz_retrieve_user_acl_record_using_id( $id ) {
  *
  * Retrieves a given ACL record for a given user using parameters other than record id
  */
-function bp_authz_retrieve_user_acl_record_id_not_known( $user_id, $filtered_component, $filtered_item, $item_id ) {
+function bp_authz_retrieve_user_acl_record_id_not_known( $user_id, $filtered_component, $filtered_item, $item_id = 0 ) {
 	global $bp;
 
 	if ( !$user_id )
