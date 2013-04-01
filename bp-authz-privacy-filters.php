@@ -588,115 +588,99 @@ function bp_authz_test_filter_compose_messages_by_acl( $recipients ) {
 //add_filter( 'bp_messages_recipients', 'bp_authz_test_filter_compose_messages_by_acl', 5, 1 );
 
 
-// NOTE: THIS STILL NEEDS TO BE COMPLETED; IT IS CURRENTLY DISABLED
 /**
  * bp_authz_filter_compose_messages_by_acl()
  *
  * Filters the recipient list in a composed message to make sure that any
  * recipient who does not want to receive a message from the user is removed
  */
-function bp_authz_filter_compose_messages_by_acl( $recipients ) {
+function bp_authz_filter_compose_messages_by_acl( $message_info ) {
 
-	// See filter hook bp_friends_autocomplete_list in bp_dtheme_ajax_messages_autocomplete_results()
+	// If message privacy is disabled, stop now!
+	if ( BP_AUTHZ_MESSAGES_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+		return;
 
-	/**
-	 * Allow site admin to see all user data.
-	 * Even though there is a "Only Me" privacy option, users do not
-	 * have any options to hide content from site administrators
-	 */
-	if ( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_MESSAGES_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
-		$filtered_recipients = $recipients;
+	// Check recipient's PM privacy settings
 	} else {
 
-		$filter_user_content = false;
+		$recipients = $message_info->recipients;
 
-		$component = "messages";
+		// # of recipients in the message that are not friends
+		$u = 0;
 
-		$filtered_item = "allow_messages_from";
+		foreach ( $recipients as $key => $recipient ) {
+			// if super admin, skip check
+			if( is_super_admin( $message_info->sender_id ) )
+				continue;
 
-		$item_id = 0;
+			// make sure sender is not trying to send to themselves
+			if ( $recipient->user_id == $message_info->sender_id ) {
+				unset( $message_info->recipients[$key] );
+				continue;
+			}
 
-		/* Loop through recipients, checking each one to determine if the viewing user has the
-		 * rights to send them a message; if not, remove recipient from list
-		 */
+			// get recipient's PM privacy settings
+			$acl_row = bp_authz_retrieve_user_acl_record_id_not_known(
+				$recipient->user_id,
+				'messages',
+				'allow_messages_from'
+			);
 
-		$filtered_recipients = $recipients;
+			$remove = false;
 
-		foreach ( $filtered_recipients as $key => $value ) {
+			// check permissions
+			if ( ! empty( $acl_row ) ) {
+				$permissions_args = array();
 
-			$filter_user_content = false;
-			$rekey_array = false;
+				switch ( $acl_row->bpaz_level ) {
+					// Friends
+					case 2 :
+						$permissions_args['receiver_user_id'] = $recipient->user_id;
 
-			// set a variable that is eventually sent to check_is_friend() and passed into $possible_friend_userid
-			$check_if_friend = $value;
+						break;
 
-			$user_type = bp_authz_determine_user_type( $check_if_friend );
+					// Lists
+					case 3 :
+					case 4 :
+						if ( ! empty( $acl_row->lists ) ) {
+							$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
+						}
 
-			/** Cannot use bp_displayed_user_id() in the below function call; instead, need to use the
-			 * current recipient in the array which is represented by the variable $value. But to do that,
-			 * we first need convert username into userID
-			 */
+						break;
 
-			//*** As mentioned above, set this variable to the UserID; find BP function to use.
-			//$recipient_id = function_that_converts_parameter_to_userID( $value );
-
-			$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $recipient_id, $component, $filtered_item, $item_id);
-
-			// filter profile field if record not empty; if empty, skip to next key
-			if ( !empty( $acl_row) ) {
-
-				$acl_level = $acl_row->bpaz_level;
-
-				$check_if_friend = bp_displayed_user_id();
-
-				$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-				$group_user_list = array();
-
-				/* If the ACL equals 3 or 4 and there is list data, then the
-				 * list needs to be parsed.
-				 */
-				if ( !empty( $acl_row->lists) ) {
-					if ( $acl_level == 3 || $acl_level == 4 ) {
-						$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
-					}
 				}
 
-				$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+				// set privacy level
+				$permissions_args['acl_level']         = $acl_row->bpaz_level;
+
+				// set initiator user ID
+				$permissions_args['initiator_user_id'] = $message_info->sender_id;
+
+				// are we removing the recipient from the PM list?
+				$remove = bp_authz_acl_filter_level( $permissions_args );
 			}
 
-			//***
-			// For testing
-			//echo "Recipient = " . $value . "Remove: " . $filter_user_content . "<br />";
-			// End testing
-
-			// rebuild array by removing marked array element
-			if ( $filter_user_content == true ) {
-
-				// remove array element
-				unset( $filtered_recipients[$key] );
-
-				// Set a flag to indicate that array needs to be re-keyed
-				$rekey_array = true;
-
-			}
-
-			if ( $rekey_array == true ) {
-				$fields_removed[] = $object_id;
+			// we are removing the recipient
+			if ( $remove == true ) {
+				unset( $message_info->recipients[$key] );
+				$u++;
 			}
 
 		}
 
-		if ( !empty( $fields_removed ) ) {
-			// Re-key the array so the keys are sequential and numeric (starting at 0)
-			$filtered_recipients = array_values( $filtered_recipients );
+		// if there are multiple recipients and if one of the recipients has
+		// restricted their PM settings, remove everyone from the recipient's list
+		//
+		// this is designed to prevent the message from being sent to anyone and is
+		// another spam prevention measure
+		if ( count( $recipients ) > 1 && $u > 0 ) {
+			unset( $message_info->recipients );
 		}
 
 	}
-	return $filtered_recipients;
 
 }
-//add_filter( 'bp_messages_recipients', 'bp_authz_filter_compose_messages_by_acl', 5, 1 );
+add_action( 'messages_message_before_save', 'bp_authz_filter_compose_messages_by_acl' );
 
 
 /********************************************************************************
