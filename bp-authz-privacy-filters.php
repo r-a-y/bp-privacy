@@ -108,12 +108,13 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 
 							$component_action = $nextvalue;
 
-							// This check is performed so that sitewide activity can be filtered if on main page
-							if ( is_home() ) {
-								/* Not on a member's profile page; on the main BP page instead */
+							// Activity directory check
+							if ( ! bp_displayed_user_id() && bp_is_activity_component() && ! bp_current_action() ) {
 								$user_to_filter = $user_to_filter;
+
+							// Everything else is assumed to be on a profile page
+							// Filter by displayed user ID
 							} else {
-								/* On a member's profile page; use their id */
 								$user_to_filter = bp_displayed_user_id();
 							}
 
