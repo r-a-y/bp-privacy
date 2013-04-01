@@ -437,11 +437,11 @@ function bp_authz_register_privacy_activity_actions() {
 	if ( !function_exists( 'bp_activity_set_action' ) )
 		return false;
 
-	bp_activity_set_action( $bp->authz->id, 'updated_privacy_settings', __( 'Updated Privacy Settings', BP_AUTHZ_PLUGIN_NAME ) );
+	bp_activity_set_action( $bp->authz->id, 'updated_privacy_settings', __( 'Privacy settings updated', BP_AUTHZ_PLUGIN_NAME ) );
 
 	do_action( 'privacy_register_activity_actions' );
 }
-add_action( 'bp_register_activity_actions', 'bp_authz_register_privacy_activity_actions' );
+//add_action( 'bp_register_activity_actions', 'bp_authz_register_privacy_activity_actions' );
 
 
 /**********************************************************************************
