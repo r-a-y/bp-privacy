@@ -23,7 +23,6 @@
  * Filters a user's activity stream based on their privacy settings
  */
 function bp_authz_filter_activity_by_acl( $has_activities, $activities_template ) {
-	global $bp;
 
 	$fields_removed = array();
 
@@ -89,7 +88,7 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 
 				for( $i = 0; $i < $count; $i++ ) { // Begin for 1A
 
-					$filter_user_content = false;
+					$remove = false;
 					$rekey_array = false;
 
 					foreach ( $value[$i] as $nextkey => $nextvalue ) { // Begin foreach 2A
@@ -152,35 +151,32 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 								$item_id .= ord( $code_final[$j] );
 							}
 
+							// get activity user's privacy settings
 							$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( $user_to_filter, $component, $filtered_item, $item_id );
 
-							// filter profile field if record not empty; if empty, skip to next key
-							if ( !empty( $acl_row) ) {
-
-								$acl_level = $acl_row->bpaz_level;
-
-								$check_if_friend = bp_displayed_user_id();
-
-								$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-								$group_user_list = array();
+							// check permissions
+							if ( ! empty( $acl_row ) ) {
+								$permissions_args = array();
 
 								/* If the ACL equals 3 or 4 and there is list data, then the
 								 * list needs to be parsed.
 								 */
-								if ( !empty( $acl_row->lists) ) {
+								if ( ! empty( $acl_row->lists ) ) {
 									if ( $acl_level == 3 || $acl_level == 4 ) {
-										$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
+										$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 									}
 								}
 
-								$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+								$permissions_args['acl_level'] = $acl_row->bpaz_level;
+
+								// should we remove the activity item?
+								$remove = bp_authz_acl_filter_level( $permissions_args );
 							}
 
 						} // End ifelse 1A
 
-						// Rebuild array by removing marked array element
-						if ( $filter_user_content == true ) {
+						// we are removing the activity item
+						if ( $remove == true ) {
 
 							// Remove array element
 							unset( $filtered_activities_array[$i] );
@@ -227,7 +223,6 @@ add_filter( 'bp_has_activities', 'bp_authz_filter_activity_by_acl', 5, 2 );
  * Filters a user's profile fields based on their privacy settings
  */
 function bp_authz_filter_profile_by_acl( $fields ) {
-	global $bp;
 
 	$fields_removed = array();
 
@@ -243,15 +238,11 @@ function bp_authz_filter_profile_by_acl( $fields ) {
 
 		$filtered_fields = $fields;
 
-		$component = "profile";
-
-		$filtered_item = "profile_field";
-
 		$count = count( $fields );
 
 		for( $i = 0; $i < $count; $i++ ) {
 
-			$filter_user_content = false;
+			$remove = false;
 			$rekey_array = false;
 
 			foreach ( $fields[$i] as $key => $value ) {
@@ -261,35 +252,38 @@ function bp_authz_filter_profile_by_acl( $fields ) {
 
 					$item_id = $value;
 
-					$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
+					// check displayed user's profile settings
+					$acl_row = bp_authz_retrieve_user_acl_record_id_not_known(
+						bp_displayed_user_id(),
+						'profile',
+						'profile_field',
+						$item_id
+					);
 
-					// filter profile field if record not empty; if empty, skip to next key
-					if ( !empty( $acl_row) ) {
-
-						$acl_level = $acl_row->bpaz_level;
-
-						$check_if_friend = bp_displayed_user_id();
-
-						$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-						$group_user_list = array();
+					// check permissions
+					if ( ! empty( $acl_row ) ) {
+						$permissions_args = array();
 
 						/* If the ACL equals 3 or 4 and there is list data, then the
 						 * list needs to be parsed.
 						 */
-						if ( !empty( $acl_row->lists) ) {
+						if ( ! empty( $acl_row->lists ) ) {
 							if ( $acl_level == 3 || $acl_level == 4 ) {
-								$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
+								$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 							}
 						}
 
-						$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+						$permissions_args['acl_level'] = $acl_row->bpaz_level;
+
+						// should we remove the profile field?
+						$remove = bp_authz_acl_filter_level( $permissions_args );
 					}
+
 				}
 			};
 
-			// rebuild array by removing marked array element
-			if ( $filter_user_content == true ) {
+			// we are removing the profile field
+			if ( $remove == true ) {
 
 				// remove array element
 				unset( $filtered_fields[$i] );
@@ -321,56 +315,52 @@ add_filter( 'xprofile_group_fields', 'bp_authz_filter_profile_by_acl', 5, 2 );
  * Filters a user's friends list based on their privacy settings
  */
 function bp_authz_filter_friends_list_by_acl() {
-	global $bp, $members_template;
-
 	/**
 	 * Allow site admin to see all user data.
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
 	if( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_FRIENDS_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
-		//Do nothing
+		return;
+
+	/* If privacy settings do not allow the current viewer to see the displayed user's
+	 * friends list, then all that is needed is to set $members_template->member_count = 0
+	 * in the $members_template object array.
+	 */
 	} else {
 
-		/* If privacy settings do not allow the current viewer to see the displayed user's
-		 * friends list, then all that is needed is to set $members_template->member_count = 0
-		 * in the $members_template object array.
-		 */
+		// get displayed user's friends list settings
+		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known(
+			bp_displayed_user_id(),
+			'friends',
+			'friends_list'
+		);
 
-		$filter_user_content = false;
+		$remove = false;
 
-		$component = "friends";
-
-		$filtered_item = "friends_list";
-
-		$item_id = 0;
-
-		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
-
-		// filter profile field if record not empty; if empty, skip to next key
-		if ( !empty( $acl_row) ) {
-
-			$acl_level = $acl_row->bpaz_level;
-
-			$check_if_friend = bp_displayed_user_id();
-
-			$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-			$group_user_list = array();
+		// check permissions
+		if ( ! empty( $acl_row ) ) {
+			$permissions_args = array();
 
 			/* If the ACL equals 3 or 4 and there is list data, then the
 			 * list needs to be parsed.
 			 */
-			if ( !empty( $acl_row->lists) ) {
+			if ( ! empty( $acl_row->lists ) ) {
 				if ( $acl_level == 3 || $acl_level == 4 ) {
-					$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
+					$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 				}
 			}
 
-			$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+			$permissions_args['acl_level'] = $acl_row->bpaz_level;
+
+			// should we remove the friends list?
+			$remove = bp_authz_acl_filter_level( $permissions_args );
 		}
 
-		if ( $filter_user_content == true ) {
+		// we are removing the friends list
+		if ( $remove == true ) {
+			global $members_template;
+
 			$members_template->member_count = 0;
 			$members_template->total_member_count = 0;
 		}
@@ -387,7 +377,6 @@ add_action( 'bp_before_directory_members_list', 'bp_authz_filter_friends_list_by
  * Friends tab is set to zero.
  */
 function bp_authz_filter_friends_count_tab( $count ) {
-	global $bp;
 
 	/**
 	 * Allow site admin to see all user data.
@@ -395,48 +384,44 @@ function bp_authz_filter_friends_count_tab( $count ) {
 	 * have any options to hide content from site administrators
 	 */
 	if( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_FRIENDS_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
-		//Do nothing
+		return $count;
+
+	/* If privacy settings do not allow the current viewer to see the displayed user's
+	 * friends list, then all that is needed is to set $members_template->member_count = 0
+	 * in the $members_template object array.
+	 */
 	} else {
 
-		/* If privacy settings do not allow the current viewer to see the displayed user's
-		 * friends list, then all that is needed is to set $members_template->member_count = 0
-		 * in the $members_template object array.
-		 */
+		// get displayed user's friend list settings
+		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known(
+			bp_displayed_user_id(),
+			'friends',
+			'friends_list'
+		);
 
-		$filter_user_content = false;
+		$remove = false;
 
-		$component = "friends";
-
-		$filtered_item = "friends_list";
-
-		$item_id = 0;
-
-		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
-
-		// filter profile field if record not empty; if empty, skip to next key
-		if ( !empty( $acl_row) ) {
-
-			$acl_level = $acl_row->bpaz_level;
-
-			$check_if_friend = bp_displayed_user_id();
-
-			$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-			$group_user_list = array();
+		// check permissions
+		if ( ! empty( $acl_row ) ) {
+			$permissions_args = array();
 
 			/* If the ACL equals 3 or 4 and there is list data, then the
 			 * list needs to be parsed.
 			 */
-			if ( !empty( $acl_row->lists) ) {
+			if ( ! empty( $acl_row->lists ) ) {
 				if ( $acl_level == 3 || $acl_level == 4 ) {
-					$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
+					$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 				}
 			}
 
-			$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+			$permissions_args['acl_level'] = $acl_row->bpaz_level;
+
+			// should we remove the friends list?
+			$remove = bp_authz_acl_filter_level( $permissions_args );
 		}
 
-		if( $filter_user_content == true ) {
+		// we are removing the friends list
+		if( $remove == true ) {
 			$count = 0;
 		}
 	}
@@ -451,12 +436,10 @@ add_filter( 'friends_get_total_friend_count', 'bp_authz_filter_friends_count_tab
  *
  * Determines who has access to a user's "Add Friend" button
  */
-function bp_authz_filter_add_friends_button_by_acl( $friend_button ) {
-	global $bp;
+function bp_authz_filter_add_friends_button_by_acl( $button ) {
 
 	// Assign passed array elements to variables
-	$button = $friend_button;
-	$friend_status = $friend_button[ 'id'];
+	$friend_status = $button['id'];
 
 	/**
 	 * Allow site admin to see all user data.
@@ -464,53 +447,47 @@ function bp_authz_filter_add_friends_button_by_acl( $friend_button ) {
 	 * have any options to hide content from site administrators
 	 */
 	if( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_FRIENDS_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
-		//Do nothing
+		return $button;
 
 	} else {
 
-		/* If privacy settings do not allow the current viewer to see the "Add Friend" Button,
-		 * then set $button = false.
-		 */
-
+		// If displayed user is pending or already is friends, show the button!
 		if( $friend_status == 'pending' || $friend_status == 'is_friend' ) {
-			// Do nothing
+			return $button;
+
+		// Check if we should remove the "Add Friend" button.
 		} else {
-			// Check to see if the "Add Friend" button should be removed. If so, do it.
 
-			$filter_user_content = false;
+			// get displayed user's friend settings
+			$acl_row = bp_authz_retrieve_user_acl_record_id_not_known(
+				bp_displayed_user_id(),
+				'friends',
+				'add_friend_button'
+			);
 
-			$component = "friends";
+			$remove = false;
 
-			$filtered_item = "add_friend_button";
-
-			$item_id = 0;
-
-			$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
-
-			// filter profile field if record not empty; if empty, skip to next key
-			if ( !empty( $acl_row) ) {
-
-				$acl_level = $acl_row->bpaz_level;
-
-				$check_if_friend = bp_displayed_user_id();
-
-				$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-				$group_user_list = array();
+			// check permissions
+			if ( ! empty( $acl_row ) ) {
+				$permissions_args = array();
 
 				/* If the ACL equals 3 or 4 and there is list data, then the
 				 * list needs to be parsed.
 				 */
-				if ( !empty( $acl_row->lists) ) {
+				if ( ! empty( $acl_row->lists ) ) {
 					if ( $acl_level == 3 || $acl_level == 4 ) {
-						$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
+						$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 					}
 				}
 
-				$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+				$permissions_args['acl_level'] = $acl_row->bpaz_level;
+
+				// see if we should remove the friend button
+				$remove = bp_authz_acl_filter_level( $permissions_args );
 			}
 
-			if( $filter_user_content == true ) {
+			// we are removing the friend button
+			if( $remove == true ) {
 				$button = false;
 			}
 		}
@@ -527,63 +504,55 @@ add_filter( 'bp_get_add_friend_button', 'bp_authz_filter_add_friends_button_by_a
  *
  * Determines who has access to a user's "Send Message" button
  */
-function bp_authz_filter_send_message_button_by_acl( $message_button_string ) {
-	global $bp;
-
+function bp_authz_filter_send_message_button_by_acl( $button ) {
 	/**
 	 * Allow site admin to see all user data.
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
 	if ( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_MESSAGES_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
-		$disallow_message = false;
+		return $button;
+
+	/* If privacy settings do not allow the current viewer to see the "Send Private Message" Button,
+	 * then change the message button string to prevent display.
+	 */
 	} else {
 
-		/* If privacy settings do not allow the current viewer to see the "Send Private Message" Button,
-		 * then change the message button string to prevent display.
-		 */
+		// get displayed user's PM settings
+		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known(
+			bp_displayed_user_id(),
+			'messages',
+			'allow_messages_from'
+		);
 
-		$filter_user_content = false;
+		$remove = false;
 
-		$disallow_message = false;
-
-		$component = "messages";
-
-		$filtered_item = "allow_messages_from";
-
-		$item_id = 0;
-
-		$acl_row = bp_authz_retrieve_user_acl_record_id_not_known( bp_displayed_user_id(), $component, $filtered_item, $item_id);
-
-		// filter profile field if record not empty; if empty, skip to next key
-		if ( !empty( $acl_row) ) {
-
-			$acl_level = $acl_row->bpaz_level;
-
-			$check_if_friend = bp_displayed_user_id();
-
-			$user_type = bp_authz_determine_user_type( $check_if_friend );
-
-			$group_user_list = array();
+		// check permissions
+		if ( ! empty( $acl_row ) ) {
+			$permissions_args = array();
 
 			/* If the ACL equals 3 or 4 and there is list data, then the
 			 * list needs to be parsed.
 			 */
-			if ( !empty( $acl_row->lists) ) {
+			if ( ! empty( $acl_row->lists ) ) {
 				if ( $acl_level == 3 || $acl_level == 4 ) {
-					$group_user_list = bp_authz_parse_list( $acl_row->lists, $acl_level );
+					$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 				}
 			}
 
-			$filter_user_content = bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content, $group_user_list );
+			$permissions_args['acl_level'] = $acl_row->bpaz_level;
+
+			// see if we should remove the PM button
+			$remove = bp_authz_acl_filter_level( $permissions_args );
 		}
 
-		if ( $filter_user_content == true ) {
-			$message_button_string = false;
+		// we are removing the PM button
+		if ( $remove == true ) {
+			$button = false;
 		}
 	}
 
-	return $message_button_string;
+	return $button;
 
 }
 add_filter( 'bp_get_send_message_button', 'bp_authz_filter_send_message_button_by_acl', 5, 1 );
@@ -597,7 +566,6 @@ add_filter( 'bp_get_send_message_button', 'bp_authz_filter_send_message_button_b
  * recipient who does not want to receive a message from the user is removed
  */
 function bp_authz_test_filter_compose_messages_by_acl( $recipients ) {
-	global $bp;
 
 	$filtered_recipients = $recipients;
 
@@ -628,7 +596,6 @@ function bp_authz_test_filter_compose_messages_by_acl( $recipients ) {
  * recipient who does not want to receive a message from the user is removed
  */
 function bp_authz_filter_compose_messages_by_acl( $recipients ) {
-	global $bp;
 
 	// See filter hook bp_friends_autocomplete_list in bp_dtheme_ajax_messages_autocomplete_results()
 
@@ -777,7 +744,6 @@ function bp_authz_parse_list( $bp_current_user_group_list, $acl_level ) {
  * into a simple, one dimensional array for further processing.
  */
 function bp_authz_extract_users_in_group( $group_id) {
-	global $bp;
 
 	$groups_members = BP_Groups_Member::get_group_member_ids($group_id);
 
@@ -790,81 +756,67 @@ function bp_authz_extract_users_in_group( $group_id) {
 
 
 /**
- * bp_authz_determine_user_type()
- *
- * Determines $user_type which is then used to determine which viewing privileges
- * a given user has to the currently displayed user's data
- */
-function bp_authz_determine_user_type( $check_if_friend ) {
-	global $bp;
-
-	// Determine relationship between logged in user and displayed user
-	if ( !is_user_logged_in() ) {
-		$user_type = "logged out"; //equates to bpaz_level = 0
-	} else {
-		// Is viewing user a friend?
-		$isfriend = BP_Friends_Friendship::check_is_friend( $bp->loggedin_user->id, $check_if_friend );
-
-		if ( $isfriend == 'is_friend') {
-			$user_type = "friend"; //equates to bpaz_level = 2
-		} else {
-			$user_type = "logged in user"; //equates to bpaz_level = 1
-		};
-	}
-
-	$user_type = apply_filters( 'bp_authz_determine_user_type', $user_type );
-
-	return $user_type;
-}
-
-
-/**
  * bp_authz_acl_filter_level()
  *
- * Uses $user_type and the retreived acl level set by the displayed user to determine which
+ * Uses the retrieved acl level set by the displayed user to determine which
  * pieces of data the viewer may see
+ *
+ * @return bool True if we should block the item; false if we shouldn't block the item.
  */
-function bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content = false, $group_user_list ) {
-	global $bp;
+function bp_authz_acl_filter_level( $args = '' ) {
+	$defaults = array(
+		'acl_level'           => 0,
+		'group_user_list'     => array(),
+		'initiator_user_id'   => bp_loggedin_user_id(),
+		'receiver_user_id'    => bp_displayed_user_id()
+	);
 
-	switch ( $acl_level ) {
-		case 1: // Logged in users only
+	$r = wp_parse_args( $args, $defaults );
 
-	    	if ( $user_type == "logged out" ) {
-	        	/* Logged out users cannot view; remove array element */
-	        	$filter_user_content = true;
-	        } else {
-	        	$filter_user_content = false;
-	        }
+	// Default is to allow access
+	// 'false' means we're not doing any blocking
+	$retval = false;
 
-	        break;
+	switch ( $r['acl_level'] ) {
+		// Logged in users only
+		case 1:
+			// WP doesn't have a function to check if a specific user is logged in or not
+			// So this will fail if a plugin dev is programatically trying to create a PM
+			//
+			// @todo Write a function that will log the current, logged in users with a
+			//       transient
+			if ( ! is_user_logged_in() ) {
+				$retval = true;
+			}
 
-	    case 2: // Friends only
+			break;
 
-	       	if ( $user_type == "friend" ) {
-	        	$filter_user_content = false;
-	        } else {
-	        	/* Viewing user cannot view; they may not be logged in and/or
-	        	 are not a friend of displayed user; remove array element */
-	        	$filter_user_content = true;
-	        }
+		// Friends only
+		case 2:
+			// sanity check
+			if ( ! bp_is_active( 'friends' ) ) {
+				continue;
+			}
 
-	        break;
+			if ( ! friends_check_friendship( $r['initiator_user_id'], $r['receiver_user_id'] ) ) {
+				$retval = true;
+			}
 
-	    case 3: // Members of These Groups
-	    	/* logged in user must be a member of at least one of the groups in array */
+		break;
 
-			/* Loop through each group, extracting its members (by userID) into an array,
-			 * adding the results to the previous array. This builds one big array of userIDs
-			 * that have viewing rights to the piece of datum in question.
-			 */
+		// Members of These Groups
+		case 3:
+			$user_list_for_groups = array();
+
+			// Loop through each group, extracting its members (by userID) into an array,
+			// adding the results to the previous array. This builds one big array of userIDs
+			// that have viewing rights to the piece of datum in question.
 			foreach( $group_user_list as $group_key => $group_value ) {
 				$groups_members = bp_authz_extract_users_in_group( $group_value );
 
-				/* Now loop through the returned array, extracting just the
-				 * userIDs. Create a new array with all userIDs for all groups
-				 * passed into this function.
-				 */
+				// Now loop through the returned array, extracting just the
+				// userIDs. Create a new array with all userIDs for all groups
+				// passed into this function.
 				if( !empty( $groups_members ) ) {
 					foreach( $groups_members as $user_key => $user_value ) {
 						$user_list_for_groups[] = $user_value;
@@ -875,42 +827,29 @@ function bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content
 			unset( $group_key);
 
 			// Search for viewing user's UserID in grouplist
-	       	if ( in_array( $bp->loggedin_user->id, $user_list_for_groups ) ) {
-	        	$filter_user_content = false;
-	       	} else {
-	       		// Logged in user is not on username list; remove array element
-	        	$filter_user_content = true;
-	       	}
+			if ( ! in_array( $r['initiator_user_id'], $user_list_for_groups ) ) {
+				$retval = true;
+			}
 
-	        break;
+			break;
 
-	    case 4: // By username only; logged in user must be in array of allowed users
+		// By username only; logged in user must be in array of allowed users
+		case 4:
+		       	if ( ! in_array( $r['initiator_user_id'], $r['group_user_list'] ) ) {
+		        	$retval = true;
+		       	}
 
-	       	/* Search for viewing user's name in userlist */
-	       	if ( in_array( $bp->loggedin_user->id, $group_user_list ) ) {
-	        	$filter_user_content = false;
-	       	} else {
-	       		/* Logged in user is not on username list; remove array element */
-	        	$filter_user_content = true;
-	       	}
+		        break;
 
-	        break;
+		// Totally private; for displayed user's and site admin's eyes only
+		case 5:
+			$retval = true;
 
-	    case 5: // Totally private; for displayed user's and site admin's eyes only
-
-	        /* Remove array element */
-	        $filter_user_content = true;
-
-	        break;
-
-	    default: // All users can view
-	    	$filter_user_content = false;
+		        break;
 
 	}
 
-	$filter_user_content = apply_filters( 'bp_authz_acl_filter_level', $filter_user_content );
-
-	return $filter_user_content;
+	return apply_filters( 'bp_authz_acl_filter_level', $retval, $r );
 }
 
 
@@ -924,7 +863,6 @@ function bp_authz_acl_filter_level( $acl_level, $user_type, $filter_user_content
 // TEST
 
 function test_filter_activity_subnav( $subnav_item_link, $subnav_item ) {
-	global $bp;
 
 	/*
 	echo "<br /><-------------------------->\n";
@@ -947,7 +885,6 @@ function test_filter_activity_subnav( $subnav_item_link, $subnav_item ) {
 
 
 function test_filter_latest_update( $latest_update ) {
-	global $bp;
 
 	return $latest_update;
 	//return false;
@@ -956,7 +893,6 @@ function test_filter_latest_update( $latest_update ) {
 
 
 function test_filter_username( $username ) {
-	global $bp;
 
 	return $username;
 	//return bp_displayed_user_username();
@@ -966,7 +902,6 @@ function test_filter_username( $username ) {
 
 // Blogs Privacy Filtering --> Similar to Activities filter using bp-has-activities
 function test_filter_blogs( $has_blogs, $blogs_template ) {
-	global $bp;
 
 
 }
@@ -975,7 +910,6 @@ function test_filter_blogs( $has_blogs, $blogs_template ) {
 
 // Groups Privacy Filtering --> Similar to Activities filter using bp-has-activities
 function test_filter_groups( $has_groups, $groups_template ) {
-	global $bp;
 
 
 }
