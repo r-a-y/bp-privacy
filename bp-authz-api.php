@@ -279,7 +279,7 @@ function bp_authz_create_privacy_settings_listbox( $bp_current_user_group_list, 
 	//global $bp_site_users, $bp_site_groups, $bp_users_groups;
 
 	// Is listbox function being called via an AJAX request.
-	if ( $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest' ) {
+	if ( ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest' ) {
 
 		/* Passed-in function parameters are coming from an AJAX request.
 		 * Convert lists array from JSON format back into object format.
