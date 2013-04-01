@@ -1123,7 +1123,7 @@ function bp_privacy_accept() {
 	/* Check to see if Site Admin has activated the privacy acceptance TOS; if
 	 * so, modify registration screen by including privacy acceptance checkbox
 	 */
-	if ( $bp_authz_settings[ 'privacy_tos' ] ) {
+	if ( ! empty( $bp_authz_settings[ 'privacy_tos' ] ) ) {
 
 		do_action( 'bp_privacy_before_accept_field' );
 
