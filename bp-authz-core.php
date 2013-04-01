@@ -156,7 +156,7 @@ function bp_authz_setup_globals() {
 	$bp->version_numbers->authz = BP_AUTHZ_VERSION;
 
 	/* Register this in the active components array */
-	$bp->active_components[$bp->authz->slug] = $bp->authz->id;
+	$bp->active_components[$bp->authz->slug] = 1;
 
 }
 add_action( 'bp_setup_globals', 'bp_authz_setup_globals' );
