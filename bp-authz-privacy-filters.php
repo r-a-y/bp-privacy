@@ -648,6 +648,69 @@ function bp_authz_filter_compose_messages_by_acl( $message_info ) {
 }
 add_action( 'messages_message_before_save', 'bp_authz_filter_compose_messages_by_acl' );
 
+/**
+ * Override BuddyPress' localization file so we can add our custom private
+ * message error message.
+ *
+ * Thanks to Paul Gibbs for this technique!
+ *
+ * @since 1.0-RC2
+ *
+ * @global object $l10n The global localization object for Wordpress
+ */
+function bp_authz_override_bp_l10n() {
+	// get recipient list
+	$recipients = ! empty( $_REQUEST['send-to-input'] ) ? $_REQUEST['send-to-input'] : false;
+
+	// no recipients? stop now!
+	if ( ! $recipients )
+		return;
+
+	global $l10n;
+
+	$mo = new MO();
+
+	// more than one recipient
+	if ( strpos( $recipients, ',' ) !== false ) {
+		$mo->add_entry( array(
+			'singular'     => 'There was an error sending that message, please try again',
+			'translations' => array(
+				__ ( "Your message could not be sent due to one of your recipient's privacy settings.", BP_AUTHZ_PLUGIN_NAME )
+			)
+		) );
+
+		$mo->add_entry( array(
+			'singular' => 'There was a problem sending that reply. Please try again.',
+			'translations' => array(
+				__ ( "Your message could not be sent due to one of your recipient's privacy settings.", BP_AUTHZ_PLUGIN_NAME )
+			)
+		) );
+
+	// just one recipient
+	} else {
+		$mo->add_entry( array(
+			'singular'     => 'There was an error sending that message, please try again',
+			'translations' => array(
+				__ ( "We're sorry, but your message could not be sent.", BP_AUTHZ_PLUGIN_NAME )
+			)
+		) );
+
+		$mo->add_entry( array(
+			'singular' => 'There was a problem sending that reply. Please try again.',
+			'translations' => array(
+				__ ( "We're sorry, but your message could not be sent.", BP_AUTHZ_PLUGIN_NAME )
+			)
+		) );
+	}
+
+	if ( isset( $l10n['buddypress'] ) )
+		$mo->merge_with( $l10n['buddypress'] );
+
+	$l10n['buddypress'] = &$mo;
+	unset( $mo );
+}
+add_action( 'bp_init', 'bp_authz_override_bp_l10n', 9 );
+
 
 /********************************************************************************
  * Shared Privacy Filtering Helper Functions
