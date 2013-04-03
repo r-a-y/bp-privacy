@@ -102,3 +102,15 @@ img.ajax_spinner {
 	display:none;
 	padding: 0 20px 0 20px;
 }
+
+/* Registration page */
+#privacy-section {
+	clear: both;
+	padding-top: 2em;
+}
+
+#privacy-section input {
+	float: left;
+	margin-right: 1em;
+	margin-top: .4em;
+}

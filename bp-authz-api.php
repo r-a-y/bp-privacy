@@ -1186,19 +1186,27 @@ function bp_privacy_accept() {
 	 */
 	if ( ! empty( $bp_authz_settings[ 'privacy_tos' ] ) ) {
 
+		// make sure there's a privacy policy page attached
+		if ( empty( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' )] ) ) {
+			return;
+		}
+
 		do_action( 'bp_privacy_before_accept_field' );
 
-		$privacy_acceptance_message = sprintf( __( ' To register on this site, you must check this box to indicate your acceptance of our <a href="%1s" title="Accept Privacy Policy">privacy policy</a>.', BP_AUTHZ_PLUGIN_NAME ), site_url( BP_AUTHZ_PRIVACY_POLICY_SLUG . '/' ) );
+		$privacy_acceptance_message = sprintf( __( ' To register on this site, you must check this box to indicate your acceptance of our <a href="%1s" title="Accept Privacy Policy">privacy policy</a>.', BP_AUTHZ_PLUGIN_NAME ), get_permalink( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' )]->id ) );
 
 		// You can customize the privacy acceptance text by adding a filter function
 		$privacy_acceptance_message = apply_filters( 'bp_authz_privacy_acceptance_message', $privacy_acceptance_message ); ?>
 
-			<div class="register-section" id="basic-details-section">
+			<div class="register-section" id="privacy-section">
 
-				<h4><?php _e( 'Accept Privacy Settings', BP_AUTHZ_PLUGIN_NAME ) ?></h4>
-				<?php do_action( 'bp_signup_accept_privacy_errors' ); ?>
+				<h4><?php _e( 'Privacy Policy', BP_AUTHZ_PLUGIN_NAME ) ?></h4>
 
-				<p><input type="checkbox" name="signup_accept_privacy" id="accept_privacy" value="0" /><?php echo $privacy_acceptance_message; ?></p>
+				<div class="checkbox">
+					<?php do_action( 'bp_signup_accept_privacy_errors' ); ?>
+					<input type="checkbox" name="signup_accept_privacy" id="accept_privacy" value="0" />
+					<label for="accept_privacy"><?php echo $privacy_acceptance_message; ?></label>
+				</div>
 
 			</div>
 
