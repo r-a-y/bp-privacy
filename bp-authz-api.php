@@ -1223,7 +1223,7 @@ add_action( 'bp_after_signup_profile_fields', 'bp_privacy_accept' );
 function bp_privacy_validate_tos() {
 	global $bp, $bp_authz_settings;
 
-	if ( BP_AUTHZ_DISABLED == 0 && $bp_authz_settings[ 'privacy_tos' ] ) {
+	if ( BP_AUTHZ_DISABLED == 0 && ! empty( $bp_authz_settings[ 'privacy_tos' ] ) ) {
 
 		if ( empty( $_POST[ 'signup_accept_privacy' ] ) )
 			$bp->signup->errors[ 'signup_accept_privacy' ] = __( 'To complete registration, you must accept our privacy policy.', BP_AUTHZ_PLUGIN_NAME );
@@ -1296,7 +1296,7 @@ add_filter( 'bp_directory_pages',          'bp_authz_filter_directory_pages' );
 function bp_privacy_filtering_active( $privacy_group ) {
 	global $bp_authz_settings;
 
-	if ( $bp_authz_settings[ 'privacy_filtering' ][ $privacy_group ] == 1 ) {
+	if ( ! empty( $bp_authz_settings[ 'privacy_filtering' ][ $privacy_group ] ) && $bp_authz_settings[ 'privacy_filtering' ][ $privacy_group ] == 1 ) {
 		return true;
 	}
 
