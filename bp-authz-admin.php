@@ -37,9 +37,11 @@ function bp_authz_admin_settings_init() {
 
 	add_settings_field( 'bp_authz_admin_enable_message_filtering_radio', __( 'Messaging Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_message_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
 
-	add_settings_field( 'bp_authz_admin_enable_blog_filtering_radio', __( 'Blogs Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_blog_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
+	// COMMENT OUT BLOG PRIVACY as it's unfinished
+	//add_settings_field( 'bp_authz_admin_enable_blog_filtering_radio', __( 'Blogs Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_blog_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
 
-	add_settings_field( 'bp_authz_admin_enable_group_filtering_radio', __( 'Groups Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_group_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
+	// COMMENT OUT GROUP PRIVACY as it's unfinished
+	//add_settings_field( 'bp_authz_admin_enable_group_filtering_radio', __( 'Groups Privacy Filtering:', BP_AUTHZ_PLUGIN_NAME ), 'bp_authz_admin_enable_group_filtering_settings', 'bp_authz_admin_settings', 'bp_authz_admin_enable_individual_filtering' );
 
 
 	// Customize ACL Settings Section
