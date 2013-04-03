@@ -56,14 +56,14 @@ See disclaimer.txt which is distributed with this plugin
  */
 function bpaz_init() {
 
-	/* Define the component's parent folder name */
+	// Define the component's parent folder name
 	define( 'BP_AUTHZ_PLUGIN_NAME', 'bp-privacy' );
 
-	/* Define component's directory and URL Paths */
-	define( 'BP_AUTHZ_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . BP_AUTHZ_PLUGIN_NAME );
-	define( 'BP_AUTHZ_PLUGIN_URL', WP_PLUGIN_URL . '/' . BP_AUTHZ_PLUGIN_NAME );
+	// Define component's directory and URL Paths
+	define( 'BP_AUTHZ_PLUGIN_DIR', dirname( __FILE__ ) );
+	define( 'BP_AUTHZ_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-	/* BuddyPress is installed and activated, finish initialization and go! */
+	// BuddyPress is installed and activated, finish initialization and go!
 	require_once( BP_AUTHZ_PLUGIN_DIR . '/bp-authz-core.php' );
 
 	/**
@@ -79,7 +79,6 @@ function bpaz_init() {
 	 * Alternatively, you can check for the existence of bpaz_init() and
 	 * only include your privacy services if it exists.
 	 */
-
 	do_action( 'bp_authz_init' );
 
 }

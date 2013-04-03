@@ -143,7 +143,7 @@ function bp_authz_setup_globals() {
 	// Custom variables
 	$bp->authz->table_name_acl_main  = $bp->table_prefix . 'bp_authz_acl_main';
 	$bp->authz->table_name_acl_lists = $bp->table_prefix . 'bp_authz_acl_lists';
-	$bp->authz->image_base           = constant( 'BP_AUTHZ_PLUGIN_URL' ) . '/images';
+	$bp->authz->image_base           = constant( 'BP_AUTHZ_PLUGIN_URL' ) . 'images';
 
 	// Register this in the active components array
 	$bp->active_components[$bp->authz->slug] = 1;
