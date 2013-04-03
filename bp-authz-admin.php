@@ -665,4 +665,146 @@ function bp_authz_admin_site_lockdown_settings() {
 
 }
 
+
+/**
+ * Setup BP-Privacy pages.
+ *
+ * We have to do some funny business to get BuddyPress to accept custom pages
+ * on the "Settings > BuddyPress > Pages" screen.
+ *
+ * BuddyPress makes it easy to register a new directory page for components,
+ * but in our case, we want multiple pages and our pages are not directories.
+ *
+ * So what we're doing here is emulating new components for each of our
+ * privacy pages in the admin area only.
+ *
+ * We only add new pages if the BP-Privacy option in question is toggled.
+ *
+ * See {@link bp_authz_admin_slugs_options()} to view how the pages are displayed
+ * on the "Settings > BuddyPress > Pages" screen.
+ *
+ * The alternative to this would have been to create our own validation and
+ * DB option solely for privacy pages, but I didn't want to do that. :)
+ *
+ * @since 1.0-RC2
+ */
+function bp_authz_setup_pages() {
+	global $bp, $bp_authz_settings;
+
+	$pages = array();
+
+	// privacy TOS check
+	if ( ! empty( $bp_authz_settings['privacy_tos'] ) ) {
+		$pages[ constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' ) ] = __( 'Privacy Policy', BP_AUTHZ_PLUGIN_NAME );
+	}
+
+	switch( $bp_authz_settings['lockdown'] ) {
+
+		// logged-in
+		case 1 :
+			$pages[ constant( 'BP_AUTHZ_CUSTOM_HOME_SLUG' ) ] = __( 'Landing Page for Non-logged-in Users', BP_AUTHZ_PLUGIN_NAME );
+
+			break;
+
+		// maintenance mode
+		case 2 :
+			$pages[ constant( 'BP_AUTHZ_MAINTENANCE_SLUG' ) ] = __( 'Maintenance Mode', BP_AUTHZ_PLUGIN_NAME );
+
+			break;
+	}
+
+	// store temporary reference variable so we can access it later on the BP
+	// "Pages" screen
+	$bp_authz_settings['pages'] = $pages;
+
+	// hack! in order for BuddyPress to recognize other pages that are not
+	// directories, we have to declare each page as its own component
+	//
+	// not pretty...
+	foreach ( $pages as $slug => $name ) {
+		$bp->$slug = new stdClass;
+		$bp->$slug->id                = $slug;
+		$bp->$slug->slug              = $slug;
+		$bp->$slug->name              = $name;
+		$bp->$slug->has_directory     = true;
+		$bp->loaded_components[$slug] = $slug;
+	}
+}
+add_action( 'bp_admin_init', 'bp_authz_setup_pages', 20 );
+
+/**
+ * Output our custom pages on the "Settings > BuddyPress > Pages" screen.
+ *
+ * @since 1.0-RC2
+ *
+ * @see bp_authz_setup_pages()
+ */
+function bp_authz_admin_slugs_options() {
+	global $bp_authz_settings;
+
+	// see bp_authz_setup_pages() where this variable is initially setup
+	$pages = $bp_authz_settings['pages'];
+
+	if ( empty( $pages ) )
+		return;
+
+	// Get the existing WP pages
+	$existing_pages = bp_core_get_directory_page_ids();
+
+	// have to do this unfortunately due to the way the 'bp_active_external_pages'
+	// hook is positioned
+	echo '</tbody></table>';
+
+	// the following markup is almost identical to bp_core_admin_slugs_options()
+?>
+
+		<h3><?php _e( 'Privacy', BP_AUTHZ_PLUGIN_NAME ); ?></h3>
+
+		<p><?php _e( 'Associate WordPress Pages with the following BuddyPress Privacy pages.', BP_AUTHZ_PLUGIN_NAME ); ?></p>
+
+		<table class="form-table">
+			<tbody>
+
+				<?php foreach ( $pages as $name => $label ) : ?>
+
+					<tr valign="top">
+						<th scope="row">
+							<label for="bp_pages[<?php echo esc_attr( $name ) ?>]"><?php echo esc_html( $label ) ?></label>
+						</th>
+
+						<td>
+
+							<?php if ( ! bp_is_root_blog() ) switch_to_blog( bp_get_root_blog_id() ); ?>
+
+							<?php echo wp_dropdown_pages( array(
+								'name'             => 'bp_pages[' . esc_attr( $name ) . ']',
+								'echo'             => false,
+								'show_option_none' => __( '- None -', 'buddypress' ),
+								'selected'         => !empty( $existing_pages[$name] ) ? $existing_pages[$name] : false
+							) ) ?>
+
+							<a href="<?php echo admin_url( add_query_arg( array( 'post_type' => 'page' ), 'post-new.php' ) ); ?>" class="button-secondary"><?php _e( 'New Page', 'buddypress' ); ?></a>
+							<input class="button-primary" type="submit" name="bp-admin-pages-single" value="<?php _e( 'Save', 'buddypress' ) ?>" />
+
+							<?php if ( !empty( $existing_pages[$name] ) ) : ?>
+
+								<a href="<?php echo get_permalink( $existing_pages[$name] ); ?>" class="button-secondary" target="_bp"><?php _e( 'View', 'buddypress' ); ?></a>
+
+							<?php endif; ?>
+
+							<?php if ( ! bp_is_root_blog() ) restore_current_blog(); ?>
+
+						</td>
+					</tr>
+
+				<?php endforeach ?>
+
+<?php
+		// notice that the trailing '</tbody></table>' is omitted?
+		// have to do this unfortunately due to the way the 'bp_active_external_pages'
+		// hook is positioned
+
+}
+add_action( 'bp_active_external_pages', 'bp_authz_admin_slugs_options' );
+
 ?>

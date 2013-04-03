@@ -1173,35 +1173,52 @@ add_action( 'bp_signup_validate', 'bp_privacy_validate_tos' );
 
 
 /**
- * bp_privacy_special_screens()
+ * Filters the BP directory pages to remove pages added by BP-Privacy.
  *
- * Intercepts a URL that references the privacy-policy slug,
- * the custom homepage slug, or the maintenance slug. It then
- * calls bp_core_load_template to load the proper template
- * file for display. See the BuddyPress Privacy Manual for
- * more details.
+ * Our pages are not technically directories, but due to the reasons explained
+ * in {@link bp_authz_setup_pages()}, we add our privacy pages as directories.
  *
- * @see bp_core_load_template()
+ * However, we do not want BP to see our pages, so this function removes
+ * BP-Privacy's pages from BP's directory pages.
  *
- * @version 1.1
- * @since 0.4
+ * @since 1.0-RC2
+ *
+ * @see bp_authz_setup_pages()
  */
+function bp_authz_filter_directory_pages( $pages ) {
+	global $bp_authz_settings;
 
-function bp_privacy_special_screens() {
-	global $bp;
+	$custom_slugs   = array();
+	$custom_slugs[] = constant( 'BP_AUTHZ_CUSTOM_HOME_SLUG' );
+	$custom_slugs[] = constant( 'BP_AUTHZ_MAINTENANCE_SLUG' );
+	$custom_slugs[] = constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' );			
 
-	if( $bp->current_component == BP_AUTHZ_PRIVACY_POLICY_SLUG ) {
-		bp_core_load_template( 'privacy/privacy-policy' );
-	} elseif ( $bp->current_component == BP_AUTHZ_CUSTOM_HOME_SLUG ) {
-		bp_core_load_template( 'privacy/welcome' );
-	} elseif ( $bp->current_component == BP_AUTHZ_MAINTENANCE_SLUG ) {
-		bp_core_load_template( 'privacy/maintenance' );
-	} else {
-		return false;
+	// check if passed variable is an object
+	$object = is_object( $pages );
+
+	foreach( $custom_slugs as $slug ) {
+		// for the 'bp_core_get_directory_pages' filter
+		if ( $object && ! empty( $pages->$slug ) ) {
+			// don't do this for admin pages
+			if ( is_admin() )
+				return $pages;
+
+			// set temporary variable so we can reference later on the frontend
+			$bp_authz_settings['pages'][$slug] = $pages->$slug;
+
+			unset( $pages->$slug );
+
+		// for the 'bp_directory_pages' filter
+		// $pages is an array
+		} elseif ( ! $object && ! empty( $pages[$slug] ) ) {
+			unset( $pages[$slug] );
+		}
 	}
 
+	return $pages;
 }
-add_action( 'wp', 'bp_privacy_special_screens', 3 );
+add_filter( 'bp_core_get_directory_pages', 'bp_authz_filter_directory_pages' );
+add_filter( 'bp_directory_pages',          'bp_authz_filter_directory_pages' );
 
 
 /* Add a function to only show BP contents to logged in users, all other users
