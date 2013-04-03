@@ -162,7 +162,7 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 								 * list needs to be parsed.
 								 */
 								if ( ! empty( $acl_row->lists ) ) {
-									if ( $acl_level == 3 || $acl_level == 4 ) {
+									if ( $acl_row->bpaz_level == 3 || $acl_row->bpaz_level == 4 ) {
 										$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 									}
 								}
@@ -268,7 +268,7 @@ function bp_authz_filter_profile_by_acl( $fields ) {
 						 * list needs to be parsed.
 						 */
 						if ( ! empty( $acl_row->lists ) ) {
-							if ( $acl_level == 3 || $acl_level == 4 ) {
+							if ( $acl_row->bpaz_level == 3 || $acl_row->bpaz_level == 4 ) {
 								$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 							}
 						}
@@ -346,7 +346,7 @@ function bp_authz_filter_friends_list_by_acl() {
 			 * list needs to be parsed.
 			 */
 			if ( ! empty( $acl_row->lists ) ) {
-				if ( $acl_level == 3 || $acl_level == 4 ) {
+				if ( $acl_row->bpaz_level == 3 || $acl_row->bpaz_level == 4 ) {
 					$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 				}
 			}
@@ -409,7 +409,7 @@ function bp_authz_filter_friends_count_tab( $count ) {
 			 * list needs to be parsed.
 			 */
 			if ( ! empty( $acl_row->lists ) ) {
-				if ( $acl_level == 3 || $acl_level == 4 ) {
+				if ( $acl_row->bpaz_level == 3 || $acl_row->bpaz_level == 4 ) {
 					$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 				}
 			}
@@ -475,7 +475,7 @@ function bp_authz_filter_add_friends_button_by_acl( $button ) {
 				 * list needs to be parsed.
 				 */
 				if ( ! empty( $acl_row->lists ) ) {
-					if ( $acl_level == 3 || $acl_level == 4 ) {
+					if ( $acl_row->bpaz_level == 3 || $acl_row->bpaz_level == 4 ) {
 						$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 					}
 				}
@@ -535,7 +535,7 @@ function bp_authz_filter_send_message_button_by_acl( $button ) {
 			 * list needs to be parsed.
 			 */
 			if ( ! empty( $acl_row->lists ) ) {
-				if ( $acl_level == 3 || $acl_level == 4 ) {
+				if ( $acl_row->bpaz_level == 3 || $acl_row->bpaz_level == 4 ) {
 					$permissions_args['group_user_list'] = bp_authz_parse_list( $acl_row->lists, $acl_row->bpaz_level );
 				}
 			}
@@ -761,7 +761,7 @@ function bp_authz_acl_filter_level( $args = '' ) {
 			// Loop through each group, extracting its members (by userID) into an array,
 			// adding the results to the previous array. This builds one big array of userIDs
 			// that have viewing rights to the piece of datum in question.
-			foreach( $group_user_list as $group_key => $group_value ) {
+			foreach( $r['group_user_list'] as $group_key => $group_value ) {
 				$groups_members = bp_authz_extract_users_in_group( $group_value );
 
 				// Now loop through the returned array, extracting just the
