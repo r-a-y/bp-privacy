@@ -137,27 +137,24 @@ add_action( 'bp_authz_init', 'bp_authz_load_settings_and_files', 1 );
  * Sets up the global BPAz variables
  */
 function bp_authz_setup_globals() {
-	global $bp, $wpdb;
+	global $bp;
 
-	/* For internal identification */
-	$bp->authz     = new stdClass;
-	$bp->authz->id = BP_AUTHZ_SLUG;
+	// For internal identification
+	$bp->authz       = new stdClass;
+	$bp->authz->id   = constant( 'BP_AUTHZ_SLUG' );
+	$bp->authz->slug = constant( 'BP_AUTHZ_SLUG' );
+	$bp->authz->name = __( 'Privacy', BP_AUTHZ_PLUGIN_NAME );
 
-	$bp->authz->table_name_acl_main = $wpdb->base_prefix . 'bp_authz_acl_main';
-	$bp->authz->table_name_acl_lists = $wpdb->base_prefix . 'bp_authz_acl_lists';
-	$bp->authz->image_base = BP_AUTHZ_PLUGIN_URL . '/images'; // not used at this time
-	$bp->authz->format_activity_function = 'bp_authz_format_activity';
-	$bp->authz->format_notification_function = 'bp_authz_format_notifications';
-	$bp->authz->slug = BP_AUTHZ_SLUG;
+	// Custom variables
+	$bp->authz->table_name_acl_main  = $bp->table_prefix . 'bp_authz_acl_main';
+	$bp->authz->table_name_acl_lists = $bp->table_prefix . 'bp_authz_acl_lists';
+	$bp->authz->image_base           = constant( 'BP_AUTHZ_PLUGIN_URL' ) . '/images';
 
-	if ( empty( $bp->version_numbers ) )
-		$bp->version_numbers = new stdClass;
-
-	$bp->version_numbers->authz = BP_AUTHZ_VERSION;
-
-	/* Register this in the active components array */
+	// Register this in the active components array
 	$bp->active_components[$bp->authz->slug] = 1;
 
+	// Register this component in the loaded components array
+	$bp->loaded_components[$bp->authz->slug] = $bp->authz->id;
 }
 add_action( 'bp_setup_globals', 'bp_authz_setup_globals' );
 
