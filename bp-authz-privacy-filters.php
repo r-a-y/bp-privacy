@@ -32,7 +32,7 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 	 * have any options to hide content from site administrators
 	 */
 
-	if ( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_ACTIVITY_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if ( is_super_admin() || bp_is_my_profile() || ! bp_privacy_filtering_active( 'activity' ) || BP_AUTHZ_DISABLED == 1 ) {
 		$filtered_activities_template = $activities_template;
 
 	} else {
@@ -231,7 +231,7 @@ function bp_authz_filter_profile_by_acl( $fields ) {
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
-	if ( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_XPROFILE_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if ( is_super_admin() || bp_is_my_profile() || ! bp_privacy_filtering_active( 'profile' ) || BP_AUTHZ_DISABLED == 1 ) {
 		$filtered_fields = $fields;
 
 	} else {
@@ -320,7 +320,7 @@ function bp_authz_filter_friends_list_by_acl() {
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
-	if( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_FRIENDS_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if( is_super_admin() || bp_is_my_profile() || ! bp_privacy_filtering_active( 'friends' ) || BP_AUTHZ_DISABLED == 1 ) {
 		return;
 
 	/* If privacy settings do not allow the current viewer to see the displayed user's
@@ -383,7 +383,7 @@ function bp_authz_filter_friends_count_tab( $count ) {
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
-	if( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_FRIENDS_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if( is_super_admin() || bp_is_my_profile() || ! bp_privacy_filtering_active( 'friends' ) || BP_AUTHZ_DISABLED == 1 ) {
 		return $count;
 
 	/* If privacy settings do not allow the current viewer to see the displayed user's
@@ -446,7 +446,7 @@ function bp_authz_filter_add_friends_button_by_acl( $button ) {
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
-	if( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_FRIENDS_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if( is_super_admin() || bp_is_my_profile() || ! bp_privacy_filtering_active( 'friends' ) || BP_AUTHZ_DISABLED == 1 ) {
 		return $button;
 
 	} else {
@@ -510,7 +510,7 @@ function bp_authz_filter_send_message_button_by_acl( $button ) {
 	 * Even though there is a "Only Me" privacy option, users do not
 	 * have any options to hide content from site administrators
 	 */
-	if ( is_super_admin() || bp_is_my_profile() || BP_AUTHZ_MESSAGES_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if ( is_super_admin() || bp_is_my_profile() || ! bp_privacy_filtering_active( 'messages' ) || BP_AUTHZ_DISABLED == 1 ) {
 		return $button;
 
 	/* If privacy settings do not allow the current viewer to see the "Send Private Message" Button,
@@ -567,7 +567,7 @@ add_filter( 'bp_get_send_message_button', 'bp_authz_filter_send_message_button_b
 function bp_authz_filter_compose_messages_by_acl( $message_info ) {
 
 	// If message privacy is disabled, stop now!
-	if ( BP_AUTHZ_MESSAGES_DISABLED == 1 || BP_AUTHZ_DISABLED == 1 ) {
+	if ( ! bp_privacy_filtering_active( 'messages' ) || BP_AUTHZ_DISABLED == 1 ) {
 		return;
 
 	// Check recipient's PM privacy settings

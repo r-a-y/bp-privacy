@@ -42,82 +42,42 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 		// - needs investigation
 		//
 		if ( bp_is_active( 'xprofile' ) ) {
-			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'profile' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php') ) {
+			if ( bp_privacy_filtering_active( 'profile' ) ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php' );
 			}
 		}
 		*/
 
 		if( bp_is_active( 'activity' ) ) {
-			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'activity' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-activity-settings.php') ) {
+			if ( bp_privacy_filtering_active( 'activity' ) ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-activity-settings.php' );
 			}
 		}
 
 		if( bp_is_active( 'friends' ) ) {
-			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'friends' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-friends-settings.php') ) {
+			if ( bp_privacy_filtering_active( 'friends' ) ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-friends-settings.php' );
 			}
 		}
 
 		if( bp_is_active( 'messages' ) ) {
-			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'messages' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-messages-settings.php') ) {
+			if ( bp_privacy_filtering_active( 'messages' ) ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-messages-settings.php' );
 			}
 		}
 
 		if( bp_is_active( 'blogs' ) ) {
-			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'blogs' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-blogs-settings.php') ) {
+			if ( bp_privacy_filtering_active( 'blogs' ) ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-blogs-settings.php' );
 			}
 		}
 
 		if( bp_is_active( 'groups' ) ) {
-			if ( $bp_authz_settings[ 'privacy_filtering' ][ 'groups' ] == 1 && file_exists( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-groups-settings.php') ) {
+			if ( bp_privacy_filtering_active( 'groups' ) ) {
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-groups-settings.php' );
 			}
 		}
 
-	}
-
-	/* For any BP Privacy filtering groupings that are disabled,
-	 * set a constant for use in privacy filtering functions.
-	 */
-
-	if ( bp_privacy_filtering_active( 'profile' ) == false ) {
-		define( 'BP_AUTHZ_XPROFILE_DISABLED', 1 );
-	} else {
-		define( 'BP_AUTHZ_XPROFILE_DISABLED', 0 );
-	}
-
-	if ( bp_privacy_filtering_active( 'activity' ) == false  ) {
-		define( 'BP_AUTHZ_ACTIVITY_DISABLED', 1 );
-	} else {
-		define( 'BP_AUTHZ_ACTIVITY_DISABLED', 0 );
-	}
-
-	if ( bp_privacy_filtering_active( 'friends' ) == false  ) {
-		define( 'BP_AUTHZ_FRIENDS_DISABLED', 1 );
-	} else {
-		define( 'BP_AUTHZ_FRIENDS_DISABLED', 0 );
-	}
-
-	if ( bp_privacy_filtering_active( 'messages' ) == false  ) {
-		define( 'BP_AUTHZ_MESSAGES_DISABLED', 1 );
-	} else {
-		define( 'BP_AUTHZ_MESSAGES_DISABLED', 0 );
-	}
-
-	if ( bp_privacy_filtering_active( 'blogs' ) == false  ) {
-		define( 'BP_AUTHZ_BLOGSS_DISABLED', 1 );
-	} else {
-		define( 'BP_AUTHZ_BLOGSS_DISABLED', 0 );
-	}
-
-	if ( bp_privacy_filtering_active( 'groups' ) == false  ) {
-		define( 'BP_AUTHZ_GROUPS_DISABLED', 1 );
-	} else {
-		define( 'BP_AUTHZ_GROUPS_DISABLED', 0 );
 	}
 
 	//*** This filter may be enabled in a future version
