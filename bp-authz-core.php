@@ -160,21 +160,6 @@ add_action( 'bp_setup_globals', 'bp_authz_setup_globals' );
 
 
 /**
- * bp_authz_register_root_component()
- *
- * Register 'privacy' as a root component and a few
- * special theme slugs
- */
-function bp_authz_register_root_component() {
-	bp_core_add_root_component( BP_AUTHZ_SLUG );
-	bp_core_add_root_component( BP_AUTHZ_PRIVACY_POLICY_SLUG );
-	bp_core_add_root_component( BP_AUTHZ_MAINTENANCE_SLUG );
-	bp_core_add_root_component( BP_AUTHZ_CUSTOM_HOME_SLUG );
-}
-add_action( 'bp_setup_root_components', 'bp_authz_register_root_component' );
-
-
-/**
  * bp_authz_setup_acl_levels()
  *
  * Set up the default BPAz access control privacy level array
