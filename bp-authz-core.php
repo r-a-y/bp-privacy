@@ -22,11 +22,6 @@ if ( !defined( 'BP_AUTHZ_SLUG' ) )
 /* Define the directory where user settings' functions reside */
 define( 'BP_AUTHZ_SETTINGS_DIR', BP_AUTHZ_PLUGIN_DIR . '/' . 'settings' );
 
-/* Define the directory and subdirectories where special privacy themes reside */
-// These constants are currently not used
-//define( 'BP_AUTHZ_THEMES_DIR', BP_AUTHZ_PLUGIN_DIR . '/' . 'themes' );
-//define( 'BP_AUTHZ_THEMES_URL', BP_AUTHZ_PLUGIN_URL . '/' . 'themes' );
-
 // Do the next three constants need to have translatable strings?
 /* Define the slug for the privacy-policy page */
 define( 'BP_AUTHZ_PRIVACY_POLICY_SLUG', 'privacy-policy' );
