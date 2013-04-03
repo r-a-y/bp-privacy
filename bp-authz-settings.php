@@ -33,7 +33,9 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 	} else {
 		define( 'BP_AUTHZ_DISABLED', 0 );
 
-		// Check for deactivated BP Core component before including each privacy settings form
+		// setup default screen and subnav for main privacy nav item
+		$default_screen = false;
+		$default_subnav = false;
 
 		/*
 		// COMMENT OUT PROFILE PRIVACY FOR NOW
@@ -41,110 +43,86 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 		// - will probably conflict with BP Core's profile privacy
 		// - needs investigation
 		//
+		// xprofile
 		if ( bp_is_active( 'xprofile' ) ) {
 			if ( bp_privacy_filtering_active( 'profile' ) ) {
+				if ( ! $default_screen ) {
+					$default_screen = 'bp_authz_screen_profile_privacy';
+					$default_subnav = 'profile-privacy';
+				}
+
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-profile-settings.php' );
 			}
 		}
 		*/
 
+		// activity
 		if( bp_is_active( 'activity' ) ) {
 			if ( bp_privacy_filtering_active( 'activity' ) ) {
+				if ( ! $default_screen ) {
+					$default_screen = 'bp_authz_screen_activity_privacy';
+					$default_subnav = 'activity-privacy';
+				}
+
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-activity-settings.php' );
 			}
 		}
 
+		// friends
 		if( bp_is_active( 'friends' ) ) {
 			if ( bp_privacy_filtering_active( 'friends' ) ) {
+				if ( ! $default_screen ) {
+					$default_screen = 'bp_authz_screen_friends_privacy';
+					$default_subnav = 'friends-privacy';
+				}
+
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-friends-settings.php' );
 			}
 		}
 
+		// messages
 		if( bp_is_active( 'messages' ) ) {
 			if ( bp_privacy_filtering_active( 'messages' ) ) {
+				if ( ! $default_screen ) {
+					$default_screen = 'bp_authz_screen_messaging_privacy';
+					$default_subnav = 'messaging-privacy';
+				}
+
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-messages-settings.php' );
 			}
 		}
 
+		// blogs
 		if( bp_is_active( 'blogs' ) ) {
 			if ( bp_privacy_filtering_active( 'blogs' ) ) {
+				if ( ! $default_screen ) {
+					$default_screen = 'bp_authz_screen_blogs_privacy';
+					$default_subnav = 'blogs-privacy';
+				}
+
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-blogs-settings.php' );
 			}
 		}
 
+		// groups
 		if( bp_is_active( 'groups' ) ) {
 			if ( bp_privacy_filtering_active( 'groups' ) ) {
+				if ( ! $default_screen ) {
+					$default_screen = 'bp_authz_screen_groups_privacy';
+					$default_subnav = 'groups-privacy';
+				}
+
 				include_once( BP_AUTHZ_SETTINGS_DIR . '/bp-authz-groups-settings.php' );
 			}
 		}
 
 	}
 
-	//*** This filter may be enabled in a future version
-	//apply_filters( 'bp_authz_add_settings_nav', $default_function, $default_subnav );
-
-	$default_subnav = null;
-
-	/*
-	// COMMENT OUT PROFILE PRIVACY FOR NOW
-	//
-	// - will probably conflict with BP Core's profile privacy
-	// - needs investigation
-	//
-	//check to see if xprofile component and profile privacy filtering are both activated
-	if ( bp_is_active( 'xprofile' ) && bp_privacy_filtering_active( 'profile' ) ) {
-		if( is_null( $default_subnav ) ) {
-			$default_function = 'bp_authz_screen_profile_privacy';
-			$default_subnav = 'profile-privacy';
-		};
-	}
-	*/
-
-	//check to see if activity component and activity privacy filtering are both activated
-	if( bp_is_active( 'activity' ) && bp_privacy_filtering_active( 'activity' ) ) {
-		if( is_null( $default_subnav ) ) {
-			$default_function = 'bp_authz_screen_activity_privacy';
-			$default_subnav = 'activity-privacy';
-		};
-	}
-
-	//check to see if friends component and friends privacy filtering are both activated
-	if( bp_is_active( 'friends' ) && bp_privacy_filtering_active( 'friends' ) ) {
-		if( is_null( $default_subnav ) ) {
-			$default_function = 'bp_authz_screen_friends_privacy';
-			$default_subnav = 'friends-privacy';
-		};
-	}
-
-	//check to see if messages component and messages privacy filtering are both activated
-	if( bp_is_active( 'messages' ) && bp_privacy_filtering_active( 'messages' ) ) {
-		if( is_null( $default_subnav ) ) {
-			$default_function = 'bp_authz_screen_messaging_privacy';
-			$default_subnav = 'messaging-privacy';
-		};
-	}
-
-	//check to see if blog component and blogs privacy filtering are both activated
-	if( bp_is_active( 'blogs' ) && bp_privacy_filtering_active( 'blogs' ) ) {
-		if( is_null( $default_subnav ) ) {
-			$default_function = 'bp_authz_screen_blogs_privacy';
-			$default_subnav = 'blogs-privacy';
-		};
-	}
-
-	//check to see if group component and groups privacy filtering are both activated
-	if( bp_is_active( 'groups' ) && bp_privacy_filtering_active( 'groups' ) ) {
-		if( is_null( $default_subnav ) ) {
-			$default_function = 'bp_authz_screen_groups_privacy';
-			$default_subnav = 'groups-privacy';
-		};
-	}
-
 	/* Just in case Site Admin has disabled all privacy objects but for some reason
 	 * did not disable overall privacy filtering we need to set a catch variable so
 	 * that the privacy menu does not get displayed
 	 */
-	if( is_null( $default_subnav ) ) {
+	if( ! $default_screen ) {
 		define( 'BP_AUTHZ_PSEUDO_DISABLED', 1 );
 		//echo "Default is null; disabled = " . BP_AUTHZ_PSEUDO_DISABLED;
 	} else {
@@ -153,10 +131,17 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 
 	/* Add the privacy settings navigation item if privacy is enabled */
 	if( BP_AUTHZ_DISABLED == 0 && BP_AUTHZ_PSEUDO_DISABLED == 0 ) {
-		bp_core_new_nav_item( array( 'name' => __( 'Privacy', BP_AUTHZ_PLUGIN_NAME ), 'slug' => $bp->authz->slug, 'position' => 90, 'show_for_displayed_user' => false, 'screen_function' => $default_function, 'default_subnav_slug' => $default_subnav ) );
+		bp_core_new_nav_item( array(
+			'name'     => __( 'Privacy', BP_AUTHZ_PLUGIN_NAME ),
+			'slug'     => $bp->authz->slug,
+			'position' => 90,
+			'show_for_displayed_user' => false,
+			'screen_function'         => $default_screen,
+			'default_subnav_slug'     => $default_subnav
+		) );
 	};
 
-	do_action( 'bp_authz_add_settings_nav', $default_function, $default_subnav );
+	do_action( 'bp_authz_add_settings_nav' );
 
 }
 add_action( 'bp_setup_nav', 'bp_authz_load_settings_files_and_add_settings_nav', 1 );
