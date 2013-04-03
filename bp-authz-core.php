@@ -6,10 +6,10 @@
  * galaxy and it's the one we live in, so not cool.
  *************************************************************/
 
-define( 'BP_AUTHZ_VERSION', '1.0-RC1' );
+define( 'BP_AUTHZ_VERSION', '1.0-RC2' );
 define( 'BP_AUTHZ_DB_VERSION', '17' );
 define( 'BP_AUTHZ_IS_INSTALLED', 1 );
-define( 'BP_AUTHZ_REQUIREMENTS', 'PHP 5.2.x, WordPress 3.0.5, BuddyPress 1.2.7' );
+define( 'BP_AUTHZ_REQUIREMENTS', 'PHP 5.2.x, WordPress 3.5.1, BuddyPress 1.6.5' );
 define( 'BP_AUTHZ_SUITABLE', 'Development Sandbox Only' );
 
 /* New constant using the BP-Privacy prefix */
