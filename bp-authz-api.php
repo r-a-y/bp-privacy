@@ -295,8 +295,10 @@ function bp_authz_create_privacy_settings_listbox( $bp_current_user_group_list, 
 	 * the values from each user_group_id key of either the 'grouplist' or the 'userlist' array
 	 * element. The $list_type variable determines which of these first-level array elements to use.
 	 */
-	foreach ( (array)$bp_current_user_group_list[$list_type] as $key => $value ) {
-		$selected_user_group_list[] = $value;
+	if ( ! empty( $bp_current_user_group_list[$list_type] ) ) {
+		foreach ( (array) $bp_current_user_group_list[$list_type] as $key => $value ) {
+			$selected_user_group_list[] = $value;
+		}
 	}
 
 	if ( empty( $selected_user_group_list ) ) {
