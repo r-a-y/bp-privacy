@@ -567,7 +567,7 @@ add_filter( 'bp_get_send_message_button', 'bp_authz_filter_send_message_button_b
 function bp_authz_filter_compose_messages_by_acl( $message_info ) {
 
 	// If message privacy is disabled, stop now!
-	if ( ! bp_privacy_filtering_active( 'messages' ) || BP_AUTHZ_DISABLED == 1 ) {
+	if ( is_super_admin() || ! bp_privacy_filtering_active( 'messages' ) || BP_AUTHZ_DISABLED == 1 ) {
 		return;
 
 	// Check recipient's PM privacy settings
@@ -579,10 +579,6 @@ function bp_authz_filter_compose_messages_by_acl( $message_info ) {
 		$u = 0;
 
 		foreach ( $recipients as $key => $recipient ) {
-			// if super admin, skip check
-			if( is_super_admin( $message_info->sender_id ) )
-				continue;
-
 			// make sure sender is not trying to send to themselves
 			if ( $recipient->user_id == $message_info->sender_id ) {
 				unset( $message_info->recipients[$key] );
