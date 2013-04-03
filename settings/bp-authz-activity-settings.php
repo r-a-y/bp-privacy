@@ -81,8 +81,9 @@ function bp_authz_screen_activity_privacy_content() {
 	<?php } ?>
 
 	<form action="<?php echo $bp->loggedin_user->domain . 'privacy/activity-privacy' ?>" method="post" id="privacy-settings-form">
-		<h3><?php _e( 'Set the viewing rights to your activity stream', BP_AUTHZ_PLUGIN_NAME ) ?></h3>
-		<p><?php _e( 'The screen below gives you privacy control over your activity stream. You can apply a single privacy-level setting to your activity stream or expand the selection, offering you even more fine-grained control. You can choose to accept the default settings or set a custom value. You can select multiple users or groups in each listbox (PC: Ctrl click; Mac: Cmd click).', BP_AUTHZ_PLUGIN_NAME ) ?></p>
+		<h3><?php _e( 'Control who can view your activity stream', BP_AUTHZ_PLUGIN_NAME ) ?></h3>
+		<p><?php _e( 'You can apply a single privacy-level setting to an activity group.  Or you can expand the selection, offering even greater control over each activity type.', BP_AUTHZ_PLUGIN_NAME ); ?>
+		<p><?php _e( 'You can choose to accept the default settings or set a custom value. You can select multiple users or groups in each listbox (PC: Ctrl click; Mac: Cmd click).', BP_AUTHZ_PLUGIN_NAME ) ?></p>
 
 		<?php wp_nonce_field( 'bp-authz-privacy-activity', '_wpnonce_privacy-activity' );
 
