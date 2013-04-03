@@ -180,6 +180,12 @@ function bp_authz_setup_acl_levels() {
 		__( 'Only Me', BP_AUTHZ_PLUGIN_NAME ) => array( 'level' => 5, 'enabled' => 0 )
 	 );
 
+	// @todo - Custom components will need to be able to add additional levels
+	//         here in the future
+	//       - They'll also need to add an option on the admin page
+	//         (see bp_authz_admin_settings_init())
+	//       - An API will need to be developed
+
 	/* Next, enable all ACL levels in the ACL array that the Site Admin has selected.
 	 * This is a simple process as the existence of any element in the below array
 	 * indicates that a given ACL level has been enabled.
