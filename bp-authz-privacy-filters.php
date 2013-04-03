@@ -108,7 +108,7 @@ function bp_authz_filter_activity_by_acl( $has_activities, $activities_template 
 							$component_action = $nextvalue;
 
 							// Activity directory check
-							if ( ! bp_displayed_user_id() && bp_is_activity_component() && ! bp_current_action() ) {
+							if ( ! bp_displayed_user_id() && bp_is_activity_component() ) {
 								$user_to_filter = $user_to_filter;
 
 							// Everything else is assumed to be on a profile page
