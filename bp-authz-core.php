@@ -304,8 +304,22 @@ function bp_authz_initialize_settings() {
 	// Create array with desired, initial BuddyPress Privacy Component Settings
 	$bp->authz->initialize_settings = array(
 		'site_wide' => '1',
-		'privacy_filtering' => array( 'profile' => '1', 'activity' => '1', 'friends' => '1', 'messages' => '1' , 'blogs' => '0' , 'groups' => '0' ),
-		'acl_levels' => array( 'All Users' => 'yes', 'Logged in Users' => 'yes', 'Friends' => 'yes', 'Members of These Groups' => 'yes', 'These Users Only' => 'yes', 'Only Me' => 'yes' ),
+		'privacy_filtering' => array(
+			'profile'  => '1',
+			'activity' => '1',
+			'friends'  => '1',
+			'messages' => '1' ,
+			'blogs'    => '0',
+			'groups'   => '0'
+		),
+		'acl_levels' => array(
+			'All Users' => 'yes',
+			'Logged in Users' => 'yes',
+			'Friends' => 'yes',
+			'Members of These Groups' => 'yes',
+			'These Users Only' => 'yes',
+			'Only Me' => 'yes'
+		),
 		'lockdown' => 0
 	);
 
