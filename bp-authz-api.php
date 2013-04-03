@@ -1082,30 +1082,91 @@ function bp_authz_output_bpaz_select( $acl_selected ) {
 /**
  * bp_privacy_site_lockdown()
  *
- * @version 1.0
+ * Depending on the "Site Lockdown Control" setting on the BP-Privacy settings
+ * page, lockdown the site if it is enabled.
+ *
+ * We lockdown the site if:
+ *  1. Only logged-in users can access network; all others get redirected to
+ *     the landing page for non-logged-in users.
+ *  2. We're in Maintenance mode; only Site Admins can access network, all
+ *     others get redirected to the maintenance page.
+ *
+ * These options are only executed if that option is selected AND if there is
+ * a corresponding WP page attached to it.
+ *
+ * @version 1.1
  * @since 0.4
  */
 function bp_privacy_site_lockdown () {
-	global $bp, $bp_authz_lockdown, $bp_authz_redirect_page;
+	global $bp_authz_settings;
 
-	/* If user navigated to registration page, member activation page, or the privacy-policy page, then let them through */
-	if( bp_is_register_page() || bp_is_activation_page() || BP_AUTHZ_PRIVACY_POLICY_SLUG == $bp->current_component )
-		return;
-
-	// Possible slugs: BP_AUTHZ_MAINTENANCE_SLUG || BP_AUTHZ_CUSTOM_HOME_SLUG || BP_REGISTER_SLUG
-	/* Otherwise, restrict access based on Admin settings and type of user */
-	if( ( $bp_authz_lockdown == 'logged_in' && !is_user_logged_in() ) or ( $bp_authz_lockdown == 'maintenance' && !is_super_admin() ) ) {
-
-		// Redirect to desired page
-		if( $bp_authz_redirect_page != $bp->current_component ) {
-			bp_core_redirect( $bp->root_domain . '/' . $bp_authz_redirect_page . '/' );
+	// If user navigated to registration page, member activation page */
+	if( ! is_user_logged_in() ) {
+		if ( bp_is_register_page() || bp_is_activation_page() ) {
+			return;
 		}
 	}
 
-	// Site is either open, user is logged in, or user is Site Admin
-	return;
+	// If on privacy page and privacy is enabled, let it through
+	if ( ! empty( $bp_authz_settings[ 'privacy_tos' ] ) ) {
+
+		// make sure there's a privacy policy page attached
+		if ( ! empty( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' )] ) ) {
+
+			// if on the privacy page, stop now!
+			if ( is_page( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' )]->id ) ) {
+				return;
+			}
+		}
+	}
+
+	// redirect based on lockdown mode
+	switch( $bp_authz_settings['lockdown'] ) {
+
+		// logged-in
+		case 1 :
+			// make sure there's a maintenance page attached
+			if ( empty( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_CUSTOM_HOME_SLUG' )] ) ) {
+				return;
+			}
+
+			// redirect for non-logged-in users
+			if ( ! is_user_logged_in() ) {
+				// prevent redirect loop
+				if ( is_page( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_CUSTOM_HOME_SLUG' )]->id ) ) {
+					return;
+				}
+
+				bp_core_redirect( get_permalink( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_CUSTOM_HOME_SLUG' )]->id ) );
+				die();
+			}
+
+			break;
+
+		// maintenance mode
+		case 2 :
+			// make sure there's a maintenance page attached
+			if ( empty( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_MAINTENANCE_SLUG' )] ) ) {
+				return;
+			}
+
+			// redirect for non-admins
+			if ( ! is_super_admin() ) {
+				// prevent redirect loop
+				if ( is_page( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_MAINTENANCE_SLUG' )]->id ) ) {
+					return;
+				}
+
+				bp_core_redirect( get_permalink( $bp_authz_settings['pages'][constant( 'BP_AUTHZ_MAINTENANCE_SLUG' )]->id ) );
+				die();
+			}
+
+			break;
+
+	}
+
 }
-add_action( 'wp', 'bp_privacy_site_lockdown', 2 );
+add_action( 'bp_screens', 'bp_privacy_site_lockdown', 1 );
 
 
 /**
@@ -1191,7 +1252,7 @@ function bp_authz_filter_directory_pages( $pages ) {
 	$custom_slugs   = array();
 	$custom_slugs[] = constant( 'BP_AUTHZ_CUSTOM_HOME_SLUG' );
 	$custom_slugs[] = constant( 'BP_AUTHZ_MAINTENANCE_SLUG' );
-	$custom_slugs[] = constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' );			
+	$custom_slugs[] = constant( 'BP_AUTHZ_PRIVACY_POLICY_SLUG' );
 
 	// check if passed variable is an object
 	$object = is_object( $pages );
@@ -1219,21 +1280,6 @@ function bp_authz_filter_directory_pages( $pages ) {
 }
 add_filter( 'bp_core_get_directory_pages', 'bp_authz_filter_directory_pages' );
 add_filter( 'bp_directory_pages',          'bp_authz_filter_directory_pages' );
-
-
-/* Add a function to only show BP contents to logged in users, all other users
- * get redirected to the main screen or registration page. See these BP forum
- * threads for details:
- * http://buddypress.org/forums/topic/security-all-site-data-visible-to-members-and-non-members-alike
- * http://buddypress.org/forums/topic/how-to-make-a-private-community
- *
- * Also include a radio button group that offers these options:
- *
- * 1. Open to all (anyone can see the network)
- * 2. Only logged in users can access network, all others get redirected to register screen ot splash screen
- * 3. Maintenance mode: only Site Admins can access network, all others get redirected to maintenance screen
- */
-
 
 
 /**
