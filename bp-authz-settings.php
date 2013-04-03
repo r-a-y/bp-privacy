@@ -12,8 +12,6 @@
  * @var string $default_subnav is the default value to the 'default_subnav_slug' key passed into bp_core_new_nav_item()
  * @global $bp The global BuddyPress settings variable created in bp_core_setup_globals()
  * @global $bp_authz_settings The global privacy settings array variable
- * @global $bp_authz_lockdown The current Site Lockdown Control set by Site Admin
- * @global $bp_authz_redirect_page The special theme slug registered as a root component that will be used in redirect
  * @uses bp_core_new_nav_item to create the main privacy navigation menu
  *
  * @version 1.0
@@ -21,7 +19,7 @@
  */
 
 function bp_authz_load_settings_files_and_add_settings_nav() {
-	global $bp, $bp_authz_settings, $bp_authz_lockdown, $bp_authz_redirect_page;
+	global $bp, $bp_authz_settings;
 
 	/* Load any settings files with active privacy groups. But first
 	 * check to see if site-wide privacy is enabled or disabled.
@@ -80,27 +78,6 @@ function bp_authz_load_settings_files_and_add_settings_nav() {
 			}
 		}
 
-	}
-
-	// Populate Site Lockdown Control variables
-
-	// Site is open to all
-	if ( $bp_authz_settings[ 'lockdown' ] == 0 ) {
-
-		// This lockdown status is not currently used
-		$bp_authz_lockdown = 'open_to_all';
-
-	// Users must be logged in to access site
-	} elseif ( $bp_authz_settings[ 'lockdown' ] == 1 ) {
-
-		$bp_authz_lockdown = 'logged_in';
-		$bp_authz_redirect_page = BP_AUTHZ_CUSTOM_HOME_SLUG;
-
-	// Site is in maintenance mode; only Site Admins can access
-	} elseif ( $bp_authz_settings[ 'lockdown' ] == 2 ) {
-
-		$bp_authz_lockdown = 'maintenance';
-		$bp_authz_redirect_page = BP_AUTHZ_MAINTENANCE_SLUG;
 	}
 
 	/* For any BP Privacy filtering groupings that are disabled,
