@@ -236,8 +236,8 @@ function bp_authz_setup_admin_bar() {
 				$wp_admin_nav[] = array(
 					'parent' => 'my-account-' . $bp->authz->id,
 					'id'     => 'my-account-' . $bp->authz->id . '-messages',
-					'title'  => __( 'Messages Privacy', BP_AUTHZ_PLUGIN_NAME ),
-					'href'   => trailingslashit( $privacy_link . 'messages-privacy' )
+					'title'  => __( 'Messaging Privacy', BP_AUTHZ_PLUGIN_NAME ),
+					'href'   => trailingslashit( $privacy_link . 'messaging-privacy' )
 				);
 			}
 
